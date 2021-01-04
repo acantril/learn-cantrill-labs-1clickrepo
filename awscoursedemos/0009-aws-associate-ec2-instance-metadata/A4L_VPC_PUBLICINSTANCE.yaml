@@ -1,5 +1,5 @@
 
-Description:  Animals4Life base VPC Template
+Description:  Animals4Life base VPC Template + Public Instance
 Parameters:
   LatestAmiId:
     Description: AMI for Bastion Host (default is latest AmaLinux2)
