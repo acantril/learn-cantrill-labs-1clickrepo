@@ -15,7 +15,6 @@ DBName:
   MinLength: '1'
   Type: String
 DBPassword:
-  AllowedPattern: '[a-zA-Z0-9]*'
   ConstraintDescription: must contain only alphanumeric characters.
   Description: The WordPress database admin account password
   MaxLength: '41'
@@ -24,7 +23,6 @@ DBPassword:
   Type: String
   Default: '4n1m4l$4L1f3'
 DBRootPassword:
-  AllowedPattern: '[a-zA-Z0-9]*'
   ConstraintDescription: must contain only alphanumeric characters.
   Description: MySQL root password
   MaxLength: '41'
@@ -33,7 +31,6 @@ DBRootPassword:
   Type: String
   Default: '4n1m4l$4L1f3'
 DBUser:
-  AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
   ConstraintDescription: must begin with a letter and contain only alphanumeric
     characters.
   Description: The WordPress database admin account username
