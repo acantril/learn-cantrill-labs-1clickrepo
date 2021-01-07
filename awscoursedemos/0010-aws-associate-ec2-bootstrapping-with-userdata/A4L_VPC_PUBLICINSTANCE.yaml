@@ -5,40 +5,40 @@ Parameters:
     Description: AMI for Bastion Host (default is latest AmaLinux2)
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
-DBName:
-  AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-  ConstraintDescription: must begin with a letter and contain only alphanumeric
-    characters.
-  Default: 'a4lwordpress'
-  Description: The WordPress database name
-  MaxLength: '64'
-  MinLength: '1'
-  Type: String
-DBPassword:
-  ConstraintDescription: must contain only alphanumeric characters.
-  Description: The WordPress database admin account password
-  MaxLength: '41'
-  MinLength: '8'
-  NoEcho: 'true'
-  Type: String
-  Default: '4n1m4l$4L1f3'
-DBRootPassword:
-  ConstraintDescription: must contain only alphanumeric characters.
-  Description: MySQL root password
-  MaxLength: '41'
-  MinLength: '8'
-  NoEcho: 'true'
-  Type: String
-  Default: '4n1m4l$4L1f3'
-DBUser:
-  ConstraintDescription: must begin with a letter and contain only alphanumeric
-    characters.
-  Description: The WordPress database admin account username
-  Default: 'a4lwordpress'
-  MaxLength: '16'
-  MinLength: '1'
-  NoEcho: 'true'
-  Type: String
+  DBName:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+    Default: 'a4lwordpress'
+    Description: The WordPress database name
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+  DBPassword:
+    ConstraintDescription: must contain only alphanumeric characters.
+    Description: The WordPress database admin account password
+    MaxLength: '41'
+    MinLength: '8'
+    NoEcho: 'true'
+    Type: String
+    Default: '4n1m4l$4L1f3'
+  DBRootPassword:
+    ConstraintDescription: must contain only alphanumeric characters.
+    Description: MySQL root password
+    MaxLength: '41'
+    MinLength: '8'
+    NoEcho: 'true'
+    Type: String
+    Default: '4n1m4l$4L1f3'
+  DBUser:
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+    Description: The WordPress database admin account username
+    Default: 'a4lwordpress'
+    MaxLength: '16'
+    MinLength: '1'
+    NoEcho: 'true'
+    Type: String
 Resources:
   VPC:
     Type: AWS::EC2::VPC
