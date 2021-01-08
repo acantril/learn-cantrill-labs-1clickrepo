@@ -5,43 +5,40 @@ Parameters:
     Description: AMI for Bastion Host (default is latest AmaLinux2)
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
-DBName:
-  AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-  ConstraintDescription: must begin with a letter and contain only alphanumeric
-    characters.
-  Default: 'a4lwordpress'
-  Description: The WordPress database name
-  MaxLength: '64'
-  MinLength: '1'
-  Type: String
-DBPassword:
-  AllowedPattern: '[a-zA-Z0-9]*'
-  ConstraintDescription: must contain only alphanumeric characters.
-  Description: The WordPress database admin account password
-  MaxLength: '41'
-  MinLength: '8'
-  NoEcho: 'true'
-  Type: String
-  Default: '4n1m4l$4L1f3'
-DBRootPassword:
-  AllowedPattern: '[a-zA-Z0-9]*'
-  ConstraintDescription: must contain only alphanumeric characters.
-  Description: MySQL root password
-  MaxLength: '41'
-  MinLength: '8'
-  NoEcho: 'true'
-  Type: String
-  Default: '4n1m4l$4L1f3'
-DBUser:
-  AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-  ConstraintDescription: must begin with a letter and contain only alphanumeric
-    characters.
-  Description: The WordPress database admin account username
-  Default: 'a4lwordpress'
-  MaxLength: '16'
-  MinLength: '1'
-  NoEcho: 'true'
-  Type: String
+  DBName:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+    Default: 'a4lwordpress'
+    Description: The WordPress database name
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+  DBPassword:
+    ConstraintDescription: must contain only alphanumeric characters.
+    Description: The WordPress database admin account password
+    MaxLength: '41'
+    MinLength: '8'
+    NoEcho: 'true'
+    Type: String
+    Default: '4n1m4l$4L1f3'
+  DBRootPassword:
+    ConstraintDescription: must contain only alphanumeric characters.
+    Description: MySQL root password
+    MaxLength: '41'
+    MinLength: '8'
+    NoEcho: 'true'
+    Type: String
+    Default: '4n1m4l$4L1f3'
+  DBUser:
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+    Description: The WordPress database admin account username
+    Default: 'a4lwordpress'
+    MaxLength: '16'
+    MinLength: '1'
+    NoEcho: 'true'
+    Type: String
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -515,69 +512,3 @@ Resources:
       Path: /
       Roles:
         - !Ref SessionManagerRole
-Outputs:
-  a4lvpc1:
-    Description: Animals4Life VPC1_ID
-    Value: !Ref VPC
-    Export: 
-      Name: a4l-vpc1
-  a4lvpc1subnetweba:
-    Description: Animals4Life VPC1 SubnetWEBA
-    Value: !Ref SubnetWEBA
-    Export:
-      Name: a4l-vpc1-subnet-weba
-  a4lvpc1subnetwebb:
-    Description: Animals4Life VPC1 SubnetWEBB
-    Value: !Ref SubnetWEBB
-    Export:
-      Name: a4l-vpc1-subnet-webb
-  a4lvpc1subnetwebc:
-    Description: Animals4Life VPC1 SubnetWEBC
-    Value: !Ref SubnetWEBC
-    Export:
-      Name: a4l-vpc1-subnet-webc
-  a4lvpc1subnetappa:
-    Description: Animals4Life VPC1 SubnetAPPA
-    Value: !Ref SubnetAPPA
-    Export:
-      Name: a4l-vpc1-subnet-appa
-  a4lvpc1subnetappb:
-    Description: Animals4Life VPC1 SubnetAPPB
-    Value: !Ref SubnetAPPB
-    Export:
-      Name: a4l-vpc1-subnet-appb
-  a4lvpc1subnetappc:
-    Description: Animals4Life VPC1 SubnetAPPC
-    Value: !Ref SubnetAPPC
-    Export:
-      Name: a4l-vpc1-subnet-appc
-  a4lvpc1subnetdba:
-    Description: Animals4Life VPC1 SubnetDBA
-    Value: !Ref SubnetDBA
-    Export:
-      Name: a4l-vpc1-subnet-dba
-  a4lvpc1subnetdbb:
-    Description: Animals4Life VPC1 SubnetDBB
-    Value: !Ref SubnetDBB
-    Export:
-      Name: a4l-vpc1-subnet-dbb
-  a4lvpc1subnetdbc:
-    Description: Animals4Life VPC1 SubnetDBC
-    Value: !Ref SubnetDBC
-    Export:
-      Name: a4l-vpc1-subnet-dbc
-  a4lvpc1subnetreserveda:
-    Description: Animals4Life VPC1 SubnetReservedA
-    Value: !Ref SubnetReservedA
-    Export:
-      Name: a4l-vpc1-subnet-reserveda
-  a4lvpc1subnetreservedb:
-    Description: Animals4Life VPC1 SubnetReservedB
-    Value: !Ref SubnetReservedB
-    Export:
-      Name: a4l-vpc1-subnet-reservedb
-  a4lvpc1subnetreservedc:
-    Description: Animals4Life VPC1 SubnetReservedC
-    Value: !Ref SubnetReservedC
-    Export:
-      Name: a4l-vpc1-subnet-reservedc
