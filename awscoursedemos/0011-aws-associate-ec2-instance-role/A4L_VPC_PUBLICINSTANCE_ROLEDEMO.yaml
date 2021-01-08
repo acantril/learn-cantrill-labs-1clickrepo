@@ -6,6 +6,8 @@ Parameters:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
 Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
   VPC:
     Type: AWS::EC2::VPC
     Properties:
