@@ -1,5 +1,5 @@
 
-Description:  Animals4Life base VPC Template + Public Instance
+Description:  Animals4Life base VPC Template + Public Instance + Wordpress + Animals4life Login Banner
 Parameters:
   LatestAmiId:
     Description: AMI for Bastion Host (default is latest AmaLinux2)
