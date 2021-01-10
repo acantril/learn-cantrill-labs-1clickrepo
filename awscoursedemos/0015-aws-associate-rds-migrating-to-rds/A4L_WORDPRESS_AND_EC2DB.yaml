@@ -19,7 +19,6 @@ Parameters:
     Description: The WordPress database admin account password
     MaxLength: '41'
     MinLength: '8'
-    NoEcho: 'true'
     Type: String
     Default: '4n1m4l$4L1f3'
   DBRootPassword:
@@ -27,7 +26,6 @@ Parameters:
     Description: MySQL root password
     MaxLength: '41'
     MinLength: '8'
-    NoEcho: 'true'
     Type: String
     Default: '4n1m4l$4L1f3'
   DBUser:
@@ -37,7 +35,6 @@ Parameters:
     Default: 'a4lwordpress'
     MaxLength: '16'
     MinLength: '1'
-    NoEcho: 'true'
     Type: String
 Resources:
   VPC:
