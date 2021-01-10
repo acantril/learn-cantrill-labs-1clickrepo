@@ -2,7 +2,7 @@
 Description:  Animals4Life base VPC Template + 3 Public Instances
 Parameters:
   LatestAmiId:
-    Description: AMI for Bastion Host (default is latest AmaLinux2)
+    Description: AMI for EC2 (default is latest AmaLinux2)
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
 Resources:
