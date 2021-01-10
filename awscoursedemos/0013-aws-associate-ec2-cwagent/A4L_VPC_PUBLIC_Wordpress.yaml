@@ -1,13 +1,45 @@
 
-Description:  Animals4Life base VPC Template + Public Instance
+Description:  Animals4Life base VPC Template + Public Instance + Wordpress + Animals4life Login Banner
 Parameters:
   LatestAmiId:
-    Description: AMI for EC2 (default is latest AmaLinux2)
+    Description: AMI for Bastion Host (default is latest AmaLinux2)
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+  DBName:
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+    Default: 'a4lwordpress'
+    Description: The WordPress database name
+    MaxLength: '64'
+    MinLength: '1'
+    Type: String
+  DBPassword:
+    ConstraintDescription: must contain only alphanumeric characters.
+    Description: The WordPress database admin account password
+    MaxLength: '41'
+    MinLength: '8'
+    NoEcho: 'true'
+    Type: String
+    Default: '4n1m4l$4L1f3'
+  DBRootPassword:
+    ConstraintDescription: must contain only alphanumeric characters.
+    Description: MySQL root password
+    MaxLength: '41'
+    MinLength: '8'
+    NoEcho: 'true'
+    Type: String
+    Default: '4n1m4l$4L1f3'
+  DBUser:
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+      characters.
+    Description: The WordPress database admin account username
+    Default: 'a4lwordpress'
+    MaxLength: '16'
+    MinLength: '1'
+    NoEcho: 'true'
+    Type: String
 Resources:
-  S3Bucket:
-    Type: AWS::S3::Bucket
   VPC:
     Type: AWS::EC2::VPC
     Properties:
@@ -352,7 +384,54 @@ Resources:
         - !Ref InstanceSecurityGroup
       Tags:
         - Key: Name
-          Value: A4L-PublicEC2
+          Value: A4L-Wordpress
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          # System Updates
+          yum -y update
+          yum -y upgrade
+          # STEP 2 - Install system software - including Web and DB
+          yum install -y mariadb-server httpd wget cowsay
+          amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+          # STEP 3 - Web and DB Servers Online - and set to startup
+          systemctl enable httpd
+          systemctl enable mariadb
+          systemctl start httpd
+          systemctl start mariadb
+          # STEP 4 - Set Mariadb Root Password
+          mysqladmin -u root password ${DBRootPassword}
+          # STEP 5 - Install Wordpress
+          wget http://wordpress.org/latest.tar.gz -P /var/www/html
+          cd /var/www/html
+          tar -zxvf latest.tar.gz
+          cp -rvf wordpress/* .
+          rm -R wordpress
+          rm latest.tar.gz
+          # STEP 6 - Configure Wordpress
+          cp ./wp-config-sample.php ./wp-config.php
+          sed -i "s/'database_name_here'/'${DBName}'/g" wp-config.php
+          sed -i "s/'username_here'/'${DBUser}'/g" wp-config.php
+          sed -i "s/'password_here'/'${DBPassword}'/g" wp-config.php
+          # Step 6a - permissions   
+          usermod -a -G apache ec2-user   
+          chown -R ec2-user:apache /var/www
+          chmod 2775 /var/www
+          find /var/www -type d -exec chmod 2775 {} \;
+          find /var/www -type f -exec chmod 0664 {} \;
+          # STEP 7 Create Wordpress DB
+          echo "CREATE DATABASE ${DBName};" >> /tmp/db.setup
+          echo "CREATE USER '${DBUser}'@'localhost' IDENTIFIED BY '${DBPassword}';" >> /tmp/db.setup
+          echo "GRANT ALL ON ${DBName}.* TO '${DBUser}'@'localhost';" >> /tmp/db.setup
+          echo "FLUSH PRIVILEGES;" >> /tmp/db.setup
+          mysql -u root --password=${DBRootPassword} < /tmp/db.setup
+          sudo rm /tmp/db.setup
+          # STEP 8 COWSAY
+          echo "#!/bin/sh" > /etc/update-motd.d/40-cow
+          echo 'cowsay "Amazon Linux 2 AMI - Animals4Life"' >> /etc/update-motd.d/40-cow
+          chmod 755 /etc/update-motd.d/40-cow
+          rm /etc/update-motd.d/30-banner
+          update-motd
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -374,3 +453,4 @@ Resources:
           FromPort: '22'
           ToPort: '22'
           CidrIpv6: ::/0
+
