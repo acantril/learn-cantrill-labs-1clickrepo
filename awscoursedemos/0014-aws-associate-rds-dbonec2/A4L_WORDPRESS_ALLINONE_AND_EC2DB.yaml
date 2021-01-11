@@ -371,6 +371,11 @@ Resources:
       Runtime: python2.7
       Role: !GetAtt IPv6WorkaroundRole.Arn
       Timeout: 30
+  WPEIP:
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      InstanceId: !Ref WordpressEC2
   WordpressEC2:
     Type: AWS::EC2::Instance
     CreationPolicy:

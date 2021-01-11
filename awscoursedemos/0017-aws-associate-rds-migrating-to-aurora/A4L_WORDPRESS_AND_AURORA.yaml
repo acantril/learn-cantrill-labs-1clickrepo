@@ -1,14 +1,13 @@
 
-Description:  Animals4Life base VPC Template + Boostrapped Wordpress + Separate EC2 MariaDB Instance
+Description:  Animals4Life base VPC Template + Boostrapped Wordpress + RDS MySQL DB (5.7.31) Instance
 Parameters:
   LatestAmiId:
-    Description: AMI for Wordpess & MariaDB Instance (default is latest AmaLinux2)
+    Description: AMI for Wordpess Instance (default is latest AmaLinux2)
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
   DBName:
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-    ConstraintDescription: must begin with a letter and contain only alphanumeric
-      characters.
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
     Default: 'a4lwordpress'
     Description: The WordPress database name
     MaxLength: '64'
@@ -29,13 +28,25 @@ Parameters:
     Type: String
     Default: '4n1m4ls4L1f3'
   DBUser:
-    ConstraintDescription: must begin with a letter and contain only alphanumeric
-      characters.
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
     Description: The WordPress database admin account username
     Default: 'a4lwordpress'
     MaxLength: '16'
     MinLength: '1'
     Type: String
+  MultiAZ:
+    Description: Multi AZ
+    Type: "String"
+    Default: "False"
+    AllowedValues:
+      - "True"
+      - "False"
+  DatabaseRestoreSnapshot:
+    Description: The snapshot name to restore from - Leave Blank for a new DB, USE ARN for a MIGRATION of a non aurora snapshot or name for aurora
+    Type: String
+Conditions:
+  NoSnapshot:
+    !Equals ['', !Ref DatabaseRestoreSnapshot]
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -371,11 +382,69 @@ Resources:
       Runtime: python2.7
       Role: !GetAtt IPv6WorkaroundRole.Arn
       Timeout: 30
-  WPEIP:
-    Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
+  RDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
     Properties:
-      InstanceId: !Ref WordpressEC2
+      VpcId: !Ref VPC
+      GroupDescription: "Ingress control for RDS instance"
+      SecurityGroupIngress: 
+        - Description: 'Allow MySQL IPv4 IN'
+          IpProtocol: tcp
+          FromPort: '3306'
+          ToPort: '3306'
+          SourceSecurityGroupId: !Ref InstanceSecurityGroup
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties: 
+      DBSubnetGroupDescription: A4L Aurora subnet group
+      SubnetIds: 
+        - !Ref SubnetDBA
+        - !Ref SubnetDBB
+        - !Ref SubnetDBC
+  DBCluster: 
+    Type: "AWS::RDS::DBCluster"
+    DeletionPolicy: Delete
+    Properties: 
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      DatabaseName: !If [NoSnapshot,  !Ref DBName, !Ref 'AWS::NoValue' ]
+      Engine: 'aurora-mysql'
+      EngineMode: 'provisioned'
+      EngineVersion: "2.07.1"
+      MasterUserPassword: !If [NoSnapshot, !Ref DBPassword, !Ref 'AWS::NoValue' ]
+      MasterUsername: !If [NoSnapshot, !Ref DBUser, !Ref 'AWS::NoValue' ]
+      SnapshotIdentifier: !If [ NoSnapshot, !Ref 'AWS::NoValue', !Ref DatabaseRestoreSnapshot]
+      Tags: 
+        - 
+          Key: Name
+          Value: "A4L-Aurora-Cluster"
+      VpcSecurityGroupIds:
+        - !Ref RDSSecurityGroup   
+  AuroraInstance1:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Delete
+    Properties:
+      AllowMajorVersionUpgrade: false
+      AutoMinorVersionUpgrade: true
+      DBClusterIdentifier: !Ref DBCluster
+      DBInstanceClass: db.t3.small
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      Engine: 'aurora-mysql'
+      Tags:
+        - Key: Name
+          Value: !Join [ '', [ 'WordPress / ', !Ref 'AWS::StackName' ] ]
+  AuroraInstance2:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Delete
+    Properties:
+      AllowMajorVersionUpgrade: false
+      AutoMinorVersionUpgrade: true
+      DBClusterIdentifier: !Ref DBCluster
+      DBInstanceClass: db.t3.small
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      Engine: 'aurora-mysql'
+      Tags:
+        - Key: Name
+          Value: !Join [ '', [ 'WordPress / ', !Ref 'AWS::StackName' ] ]
   WordpressEC2:
     Type: AWS::EC2::Instance
     CreationPolicy:
@@ -415,7 +484,7 @@ Resources:
           sed -i "s/'database_name_here'/'${DBName}'/g" wp-config.php
           sed -i "s/'username_here'/'${DBUser}'/g" wp-config.php
           sed -i "s/'password_here'/'${DBPassword}'/g" wp-config.php
-          sed -i "s/'localhost'/'${MariaDBEC2.PrivateDnsName}'/g" wp-config.php
+          sed -i "s/'localhost'/'${DBCluster.Endpoint.Address}'/g" wp-config.php
           # Step 6a - permissions   
           usermod -a -G apache ec2-user   
           chown -R ec2-user:apache /var/www
@@ -433,53 +502,13 @@ Resources:
           mkdir -p /usr/share/collectd/
           touch /usr/share/collectd/types.db
           /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c ssm:${CWAgentConfig} -s
-          # STEP 10 SIGNAL FINISH OF INSTALL & CONFIG
+          # STEP 11 SIGNAL FINISH OF INSTALL & CONFIG
           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource WordpressEC2 --region ${AWS::Region}
-  MariaDBEC2:
-    Type: AWS::EC2::Instance
-    CreationPolicy:
-      ResourceSignal:
-        Timeout: PT15M
+  WPEIP:
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGatewayAttachment
     Properties:
-      InstanceType: "t2.micro"
-      ImageId: !Ref LatestAmiId
-      IamInstanceProfile: !Ref WordpressInstanceProfile
-      SubnetId: !Ref SubnetWEBA
-      SecurityGroupIds: 
-        - !Ref InstanceSecurityGroup
-      Tags:
-        - Key: Name
-          Value: A4L-DB-Wordpress
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash -xe      
-          # Begin Configuration
-          yum -y install mariadb-server wget cowsay
-          systemctl enable mariadb
-          systemctl start mariadb
-          yum -y update
-          rpm -Uvh https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
-          mkdir -p /usr/share/collectd/
-          touch /usr/share/collectd/types.db
-          /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c ssm:${CWAgentConfig} -s
-        
-          # DB setup
-          echo "CREATE DATABASE ${DBName};" >> /tmp/db.setup
-          echo "CREATE USER '${DBUser}' IDENTIFIED BY '${DBPassword}';" >> /tmp/db.setup
-          echo "GRANT ALL PRIVILEGES ON *.* TO '${DBUser}'@'%';" >> /tmp/db.setup
-          echo "FLUSH PRIVILEGES;" >> /tmp/db.setup
-          mysqladmin -u root password "${DBRootPassword}"
-          mysql -u root --password="${DBRootPassword}" < /tmp/db.setup
-          rm /tmp/db.setup
-        
-          # cowsay
-          echo "#!/bin/sh" > /etc/update-motd.d/40-cow
-          echo 'cowsay "Amazon Linux 2 AMI - Animals4Life"' > /etc/update-motd.d/40-cow
-          chmod 755 /etc/update-motd.d/40-cow
-          rm /etc/update-motd.d/30-banner
-          update-motd
-        
-          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource MariaDBEC2 --region ${AWS::Region}
+      InstanceId: !Ref WordpressEC2
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -638,3 +667,7 @@ Resources:
             }
           }
         }
+Outputs:
+  dbhost:
+    Description: "RDS Endpoint Address"
+    Value: !GetAtt DB.Endpoint.Address
