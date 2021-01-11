@@ -670,4 +670,4 @@ Resources:
 Outputs:
   dbhost:
     Description: "RDS Endpoint Address"
-    Value: !GetAtt DB.Endpoint.Address
+    Value: !GetAtt DBCluster.Endpoint.Address
