@@ -20,14 +20,14 @@ Parameters:
     MaxLength: '41'
     MinLength: '8'
     Type: String
-    Default: '4n1m4l$4L1f3'
+    Default: '4n1m4ls4L1f3'
   DBRootPassword:
     ConstraintDescription: must contain only alphanumeric characters.
     Description: MySQL root password
     MaxLength: '41'
     MinLength: '8'
     Type: String
-    Default: '4n1m4l$4L1f3'
+    Default: '4n1m4ls4L1f3'
   DBUser:
     ConstraintDescription: must begin with a letter and contain only alphanumeric
       characters.
