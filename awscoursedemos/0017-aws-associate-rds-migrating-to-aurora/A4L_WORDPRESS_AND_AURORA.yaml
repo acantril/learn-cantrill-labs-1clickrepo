@@ -440,6 +440,7 @@ Resources:
           Value: !Join [ '', [ 'WordPress / ', !Ref 'AWS::StackName' ] ]
   WordpressEC2:
     Type: AWS::EC2::Instance
+    DependsOn: [AuroraInstance1, AuroraInstance2, DBCluster]
     CreationPolicy:
       ResourceSignal:
         Timeout: PT15M

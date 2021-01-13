@@ -401,7 +401,7 @@ Resources:
       DBSubnetGroupName: !Ref DBSubnetGroup
       DatabaseName: !If [NoSnapshot,  !Ref DBName, !Ref 'AWS::NoValue' ]
       Engine: 'aurora-mysql'
-      EngineMode: 'provisioned'
+      EngineMode: 'serverless'
       EngineVersion: "5.7.mysql_aurora.2.07.1"
       MasterUserPassword: !If [NoSnapshot, !Ref DBPassword, !Ref 'AWS::NoValue' ]
       MasterUsername: !If [NoSnapshot, !Ref DBUser, !Ref 'AWS::NoValue' ]
