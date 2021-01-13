@@ -516,11 +516,6 @@ Resources:
           chmod 755 /home/ec2-user/update_wp_ip.sh
           echo "/home/ec2-user/update_wp_ip.sh" >> /etc/rc.local
           /home/ec2-user/update_wp_ip.sh
-  WPEIP:
-    Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
-    Properties:
-      InstanceId: !Ref WordpressEC2
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
