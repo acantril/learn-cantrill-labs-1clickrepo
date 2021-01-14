@@ -708,7 +708,7 @@ Outputs:
     Value: !Ref WordpressInstanceProfile
     Export: 
       Name: "A4L-WordpressInstanceProfile"
-  subnet-web-a:
+  subnetweba:
     Description: "Web A (Public) Subnet"
     Value: !Ref SubnetWEBA
     Export:
