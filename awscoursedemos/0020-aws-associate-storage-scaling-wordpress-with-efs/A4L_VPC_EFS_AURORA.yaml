@@ -561,6 +561,7 @@ Resources:
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
         - "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonElasticFileSystemClientFullAccess"
   WordpressInstanceProfile:
     Type: 'AWS::IAM::InstanceProfile'
     Properties:
@@ -674,6 +675,33 @@ Resources:
             }
           }
         }
+  ElasticFileSystem:
+    Type: AWS::EFS::FileSystem
+    Properties:
+      FileSystemTags:
+        - Key: Name
+          Value: !Join [ '', [ 'A4L-EFS-WordPress / ', !Ref 'AWS::StackName' ] ]
+  ElasticFileSystemMountTarget0:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref "ElasticFileSystem"
+      SecurityGroups:
+        - !Ref "InstanceSecurityGroup"
+      SubnetId: !Ref "SubnetAPPA"
+  ElasticFileSystemMountTarget1:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref "ElasticFileSystem"
+      SecurityGroups:
+        - !Ref "InstanceSecurityGroup"
+      SubnetId: !Ref "SubnetAPPB"
+  ElasticFileSystemMountTarget2:
+    Type: AWS::EFS::MountTarget
+    Properties:
+      FileSystemId: !Ref "ElasticFileSystem"
+      SecurityGroups:
+        - !Ref "InstanceSecurityGroup"
+      SubnetId: !Ref "SubnetAPPC"
 Outputs:
   instanceprofile:
     Description: "Default Instance Profile"
@@ -690,6 +718,12 @@ Outputs:
     Value: !Ref InstanceSecurityGroup
     Export:
       Name: "A4L-InstanceSecurityGroup"
-  dbhost:
+  dbendpoint:
     Description: "RDS Endpoint Address"
     Value: !GetAtt DBCluster.Endpoint.Address
+    Export:
+      Name: "A4L-DBENDPOINT"
+  ElasticFileSystem:
+    Value: !Ref ElasticFileSystem
+    Export:
+      Name: A4L-EFS
