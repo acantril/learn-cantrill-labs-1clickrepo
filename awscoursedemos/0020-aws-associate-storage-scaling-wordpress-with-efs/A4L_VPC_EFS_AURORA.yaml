@@ -727,3 +727,8 @@ Outputs:
     Value: !Ref ElasticFileSystem
     Export:
       Name: A4L-EFS
+  cwagentconfig:
+    Description: "CWAgent Config Parameter"
+    Value: !Ref "CWAgentConfig"
+    Export:
+      Name: "A4L-CWAGENT-CONFIG"

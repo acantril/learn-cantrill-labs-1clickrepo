@@ -123,4 +123,5 @@ Resources:
             
           - a4ldbendpoint: !ImportValue A4L-DBENDPOINT
             ElasticFileSystem: !ImportValue A4L-EFS
+            CWAgentConfig: !ImportValue A4L-CWAGENT-CONFIG
 
