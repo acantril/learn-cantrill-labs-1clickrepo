@@ -1,5 +1,5 @@
 
-Description:  Animals4Life base VPC Template + TWO ECS Instance for EFS Demo
+Description:  Animals4Life base VPC Template + TWO EC2 Instance for EFS Demo
 Parameters:
   LatestAmiId:
     Description: AMI for Wordpess Instance (default is latest AmaLinux2)
@@ -463,7 +463,7 @@ Resources:
     Properties:
       Path: /
       Roles:
-        - !Ref WordpressRole
+        - !Ref InstanceRole
   CWAgentConfig:
     Type: AWS::SSM::Parameter
     Properties:
