@@ -22,7 +22,7 @@ Resources:
         - arn:aws:iam::aws:policy/IAMUserChangePassword
       LoginProfile:
         Password: !Ref sallypassword
-        PasswordResetRequired: "true"
+        PasswordResetRequired: "false"
   policy:
     Type: AWS::IAM::ManagedPolicy
     Properties: 
