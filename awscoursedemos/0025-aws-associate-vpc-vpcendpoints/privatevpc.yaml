@@ -5,10 +5,6 @@ Parameters:
     Description: AMI for Bastion Host (default is latest AmaLinux2)
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
-  KeyName:
-    Type: AWS::EC2::KeyPair::KeyName
-    Default: 'A4L'
-    Description: "Name of an existing SSH Keypair to access the instance"
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -351,7 +347,6 @@ Resources:
       - ssmec2messagesinterfaceendpoint
       - ssmmessagesinterfaceendpoint
     Properties:
-      KeyName: !Ref KeyName
       InstanceType: "t2.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref EC2InstanceProfile
