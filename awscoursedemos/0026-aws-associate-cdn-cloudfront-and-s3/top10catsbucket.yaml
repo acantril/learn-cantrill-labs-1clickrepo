@@ -3,6 +3,24 @@ Description:  S3 Bucket Using a custom Resource
 Resources:
   top10cats:
     Type: AWS::S3::Bucket
+    Properties:
+      WebsiteConfiguration:
+        IndexDocument: 'index.html'
+        ErrorDocument: 'error.html'
+  top10cats:
+    Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref top10cats
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            -
+            Sid: ReadFromLCBucket
+            Effect: Allow
+            Action:
+              - "s3:GetObject"
+            Resource:
+              - !Sub "${top10cats}/*"
   copytop10cats:
     Type: "Custom::S3Objects"
     Properties:
