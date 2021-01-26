@@ -17,6 +17,7 @@ Resources:
           -
             Sid: PublicAccess
             Effect: Allow
+            Principal: '*'
             Action:
               - "s3:GetObject"
             Resource:
