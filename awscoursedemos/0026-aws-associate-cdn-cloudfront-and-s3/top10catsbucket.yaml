@@ -1,5 +1,5 @@
 
-Description:  S3 Bucket Using a custom Resource
+Description:  Top10 Cats S3 Bucket with Static Website Hosting and Public Access
 Resources:
   top10cats:
     Type: AWS::S3::Bucket
@@ -21,7 +21,7 @@ Resources:
             Action:
               - "s3:GetObject"
             Resource:
-              - !Sub "${top10cats}/*"
+              - !Sub "arn:aws:s3:::${top10cats}/*"
   copytop10cats:
     Type: "Custom::S3Objects"
     Properties:
