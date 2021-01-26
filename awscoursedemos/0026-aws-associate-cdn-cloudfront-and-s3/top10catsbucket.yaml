@@ -136,6 +136,10 @@ Resources:
             objects = [{'Key': x['Key']} for page in page_iterator for x in page['Contents']]
             client.delete_objects(Bucket=bucket, Delete={'Objects': objects})
             return cfnresponse.SUCCESS
+Outputs:
+  WebsiteEndPoint:
+    Description: 'URL to access static website direct to S3'
+    Value: !GetAtt top10cats.WebsiteURL
 
 
 
