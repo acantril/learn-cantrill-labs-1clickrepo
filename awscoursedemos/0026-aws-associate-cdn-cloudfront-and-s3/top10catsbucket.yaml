@@ -7,7 +7,7 @@ Resources:
       WebsiteConfiguration:
         IndexDocument: 'index.html'
         ErrorDocument: 'error.html'
-  top10cats:
+  bucketpolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket: !Ref top10cats
