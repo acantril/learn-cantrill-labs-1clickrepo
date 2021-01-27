@@ -23,11 +23,10 @@ Resources:
       LoginProfile:
         Password: !Ref sallypassword
         PasswordResetRequired: "false"
-  policy:
+  AllowAllS3ExceptCats:
     Type: AWS::IAM::ManagedPolicy
     Properties: 
       Description: Allow access to all S3 buckets, except catpics
-      ManagedPolicyName: AllowAllS3ExceptCats
       PolicyDocument: 
         Version: 2012-10-17
         Statement:
