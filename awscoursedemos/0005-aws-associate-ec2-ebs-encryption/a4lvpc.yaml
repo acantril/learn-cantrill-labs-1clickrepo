@@ -1,9 +1,5 @@
 
 Description:  Animals4Life base VPC Template
-  It will be used anywhere where AWS product and service [DEMO] lessons require a VPC to be inplace and functional
-  Optional additions to the VPC Template (to save costs)
-  A4L_BastionHost - Deploys a bastionHost to access the VPC Private Resources (Can be removed to save costs)
-  A4L_NatGateways - Deploys 3 NatGateways (this has a base cost, can be omitted if no private subnet network access is required - or removed when not studying to save costs)
 Resources:
   VPC:
     Type: AWS::EC2::VPC
