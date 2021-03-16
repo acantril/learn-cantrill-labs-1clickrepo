@@ -364,11 +364,11 @@ Resources:
             apt-get update && apt-get install -y strongswan wget
             mkdir /home/ubuntu/demo_assets
             cd /home/ubuntu/demo_assets
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter1/ipsec-vti.sh
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter1/ipsec.conf
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter1/ipsec.secrets
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter1/51-eth1.yaml
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter1/ffrouting-install.sh
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter1/ipsec-vti.sh
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter1/ipsec.conf
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter1/ipsec.secrets
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter1/51-eth1.yaml
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter1/ffrouting-install.sh
             chown ubuntu:ubuntu /home/ubuntu/demo_assets -R
             cp /home/ubuntu/demo_assets/51-eth1.yaml /etc/netplan
             netplan --debug apply
@@ -415,11 +415,11 @@ Resources:
             apt-get update && apt-get install -y strongswan wget
             mkdir /home/ubuntu/demo_assets
             cd /home/ubuntu/demo_assets
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter2/ipsec-vti.sh
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter2/ipsec.conf
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter2/ipsec.secrets
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter2/51-eth1.yaml
-            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/AWS_HYBRID_AdvancedVPN/OnPremRouter2/ffrouting-install.sh
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter2/ipsec-vti.sh
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter2/ipsec.conf
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter2/ipsec.secrets
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter2/51-eth1.yaml
+            wget https://raw.githubusercontent.com/acantril/learn-cantrill-io-labs/master/aws-hybrid-bgpvpn/OnPremRouter2/ffrouting-install.sh
             chown ubuntu:ubuntu /home/ubuntu/demo_assets -R
             cp /home/ubuntu/demo_assets/51-eth1.yaml /etc/netplan
             netplan --debug apply
