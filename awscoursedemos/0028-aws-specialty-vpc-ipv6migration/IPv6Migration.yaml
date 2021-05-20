@@ -118,7 +118,7 @@ Parameters:
   Ubuntu16AmiId:
     Description: Ubuntu 16 AMI for any EC2 Instances (if applicable)
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
-    Default: '/aws/service/canonical/ubuntu/server-minimal/16.04/stable/20210430/amd64/hvm/ebs-gp2/ami-id'
+    Default: '/aws/service/canonical/ubuntu/server/16.04/stable/20210429/arm64/hvm/ebs-gp2/ami-id'
 Metadata: 
   AWS::CloudFormation::Interface: 
     ParameterGroups:
