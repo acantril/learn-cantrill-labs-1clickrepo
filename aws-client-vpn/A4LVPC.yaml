@@ -1043,4 +1043,79 @@ Resources:
       Path: /
       Roles:
         - !Ref SessionManagerRole
+  SGWEB:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription: Control access to WEB Instance(s)
+      SecurityGroupIngress: 
+        - Description: 'Allow HTTP IPv4 IN'
+          IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: '192.168.12.0/22'
+  WEBLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties: 
+      LaunchTemplateData: 
+        InstanceType: "t2.micro"
+        CreditSpecification:
+          CpuCredits: unlimited
+        ImageId: !Ref LatestAmiId
+        IamInstanceProfile: 
+          Name: !Ref SessionManagerInstanceProfile
+        SecurityGroupIds: 
+          - !Ref SGWEB
+        UserData:
+          Fn::Base64: !Sub |
+            #!/bin/bash -xe
+  
+            # STEP 1 - Updates
+            yum -y update
+            
+            # STEP 2 - Begin Configuration
+            yum -y install httpd wget cowsay curl python3 pip3
+            amazon-linux-extras install -y php7.2
+            amazon-linux-extras install epel -y
+            yum install stress -y
+            pip3 install random-cat
+            systemctl enable httpd
+            systemctl start httpd
+  
+            # STEP 2 - Custom Random Web Page
+            bgcolor=$(printf "%02x%02x%02x\n" $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)))
+            instanceId=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+            wget -O /var/www/html/cat.gif "http://thecatapi.com/api/images/get?format=src&type=gif&api_key=8f7dc437-0b9b-47b8-a2c0-65925d593acf"
+            echo "<html><head></head><body style=\"background-color:#$bgcolor;\">" >> /var/www/html/index.html
+            echo "<center><h1>Instance ID : $instanceId</h1></center><br>" >> /var/www/html/index.html
+            echo "<center><img src=\"cat.gif\"></center>" >> /var/www/html/index.html
+            echo "</body></html>" >> /var/www/html/index.html
+  
+            # Step 4 - permissions 
+            usermod -a -G apache ec2-user   
+            chown -R ec2-user:apache /var/www
+            chmod 2775 /var/www
+            find /var/www -type d -exec chmod 2775 {} \;
+            find /var/www -type f -exec chmod 0664 {} \;
+
+  ASG: 
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties: 
+      VPCZoneIdentifier:
+        - !Ref SubnetPubA
+        - !Ref SubnetPubA
+        - !Ref SubnetPubA
+      LaunchTemplate:
+        LaunchTemplateId: !Ref WEBLaunchTemplate
+        Version: "1"
+      MaxSize: 1
+      MinSize: 1
+      DesiredCapacity: 1
+      Tags:
+        - Key: "Name"
+          Value: "CATWEB"
+          PropagateAtLaunch: true
+      HealthCheckType: EC2
+      HealthCheckGracePeriod: 300
+
 
