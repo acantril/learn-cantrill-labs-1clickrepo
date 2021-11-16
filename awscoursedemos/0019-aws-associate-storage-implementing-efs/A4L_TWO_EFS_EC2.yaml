@@ -369,12 +369,7 @@ Resources:
           chmod 755 /etc/update-motd.d/40-cow
           rm /etc/update-motd.d/30-banner
           update-motd
-          # STEP 4 CWAgent Install & Config
-          rpm -Uvh https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
-          mkdir -p /usr/share/collectd/
-          touch /usr/share/collectd/types.db
-          /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c ssm:${CWAgentConfig} -s
-          # STEP 5 SIGNAL FINISH OF INSTALL & CONFIG
+          # STEP 4 SIGNAL FINISH OF INSTALL & CONFIG
           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource EC2InstanceA --region ${AWS::Region}
   EC2InstanceB:
     Type: AWS::EC2::Instance
@@ -405,12 +400,7 @@ Resources:
           chmod 755 /etc/update-motd.d/40-cow
           rm /etc/update-motd.d/30-banner
           update-motd
-          # STEP 4 CWAgent Install & Config
-          rpm -Uvh https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm
-          mkdir -p /usr/share/collectd/
-          touch /usr/share/collectd/types.db
-          /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c ssm:${CWAgentConfig} -s
-          # STEP 5 SIGNAL FINISH OF INSTALL & CONFIG
+          # STEP 4 SIGNAL FINISH OF INSTALL & CONFIG
           /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackId} --resource EC2InstanceB --region ${AWS::Region}
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
