@@ -561,6 +561,9 @@ Resources:
         Value: !Sub "${AWS::StackName}-RT-PUB-C"
   DefaultRouteIPv4PUBA:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: PublicIPv4
     Properties:
       DestinationCidrBlock: 0.0.0.0/0
@@ -568,6 +571,9 @@ Resources:
       RouteTableId: !Ref RTPUBA
   DefaultRouteIPv4PUBB:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: PublicIPv4
     Properties:
       DestinationCidrBlock: 0.0.0.0/0
@@ -575,6 +581,9 @@ Resources:
       RouteTableId: !Ref RTPUBB
   DefaultRouteIPv4PUBC:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: PublicIPv4
     Properties:
       DestinationCidrBlock: 0.0.0.0/0
@@ -582,6 +591,9 @@ Resources:
       RouteTableId: !Ref RTPUBC
   DefaultRouteIPv6RESERVEDA:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -589,6 +601,9 @@ Resources:
       RouteTableId: !Ref RTRESERVEDA
   DefaultRouteIPv6DBA:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -596,6 +611,9 @@ Resources:
       RouteTableId: !Ref RTDBA
   DefaultRouteIPv6PUBA:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -603,6 +621,9 @@ Resources:
       RouteTableId: !Ref RTPUBA
   DefaultRouteIPv6PRIVA:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -610,6 +631,9 @@ Resources:
       RouteTableId: !Ref RTPRIVA
   DefaultRouteIPv6RESERVEDB:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -617,6 +641,9 @@ Resources:
       RouteTableId: !Ref RTRESERVEDB
   DefaultRouteIPv6DBB:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -624,6 +651,9 @@ Resources:
       RouteTableId: !Ref RTDBB
   DefaultRouteIPv6PUBB:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -631,6 +661,9 @@ Resources:
       RouteTableId: !Ref RTPUBB
   DefaultRouteIPv6PRIVB:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -638,6 +671,9 @@ Resources:
       RouteTableId: !Ref RTPRIVB
   DefaultRouteIPv6RESERVEDC:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -645,6 +681,9 @@ Resources:
       RouteTableId: !Ref RTRESERVEDC
   DefaultRouteIPv6DBC:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -652,6 +691,9 @@ Resources:
       RouteTableId: !Ref RTDBC
   DefaultRouteIPv6PUBC:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
@@ -659,6 +701,9 @@ Resources:
       RouteTableId: !Ref RTPUBC
   DefaultRouteIPv6PRIVC:
     Type : AWS::EC2::Route
+    DependsOn:
+      - IGW
+      - IGWAttachments 
     Condition: EnableIPv6
     Properties:
       DestinationIpv6CidrBlock: ::/0
