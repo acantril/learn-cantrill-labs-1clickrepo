@@ -27,8 +27,8 @@ Metadata:
           - DC2NetBIOSName
           - DC1PRIVATEIP
           - DC2PRIVATEIP
-          - ADAdminUser
-          - ADAdminPassword
+          - DomainAdminUser
+          - DomainAdminPassword
           - DomainDNSName
           - DomainNetBIOSName
           - DomainAdminPassword
