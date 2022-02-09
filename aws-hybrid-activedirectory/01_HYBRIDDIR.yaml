@@ -199,7 +199,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: ONPREMVPC
     Properties:
-      TemplateURL: https://learn-cantrill-labs.s3.amazonaws.com/aws-hybrid-activedirectory/03_HYBRIDDIR-NESTED-ONPREM-AD.yaml
+      TemplateURL: https://learn-cantrill-labs.s3.amazonaws.com/aws-hybrid-activedirectory/03_HYBRIDDIR-NESTED-ONPREM-AD-v2.yaml
       Parameters:
         ADInstanceType: !Ref ADInstanceType
         ADServer1NetBIOSName: !Ref DC1NetBIOSName
