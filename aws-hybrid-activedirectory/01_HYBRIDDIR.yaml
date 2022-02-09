@@ -68,14 +68,14 @@ Parameters:
     Default: 192.168.11.100
     Description: Fixed private IP for the DC2 located in AZB
     Type: String
-  ADAdminPassword:
+  DomainAdminPassword:
     AllowedPattern: (?=^.{6,255}$)((?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*
     Description: Password for the ONPREM AD Domain Admin User
     MaxLength: '32'
     MinLength: '8'
     NoEcho: 'true'
     Type: String
-  ADAdminUser:
+  DomainAdminUser:
     AllowedPattern: '[a-zA-Z0-9]*'
     Default: Admin
     Description: User name for the account that will be added as Domain Administrator. This is separate from the default "Administrator" account
@@ -206,8 +206,8 @@ Resources:
         ADServer2NetBIOSName: !Ref DC2NetBIOSName
         ADServer1PrivateIP: !Ref DC1PRIVATEIP
         ADServer2PrivateIP: !Ref DC2PRIVATEIP
-        ADAdminPassword: !Ref ADAdminPassword
-        ADAdminUser: !Ref ADAdminUser
+        DomainAdminPassword: !Ref DomainAdminPassword
+        DomainAdminUser: !Ref DomainAdminUser
         DomainDNSName: !Ref DomainDNSName
         DomainNetBIOSName: !Ref DomainNetBIOSName
         KeyPairName: !Ref KeyPairName

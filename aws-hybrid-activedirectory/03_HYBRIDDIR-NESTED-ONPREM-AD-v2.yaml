@@ -1,10 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: >-
-  This template creates 2 Windows Active Directory Domain Controllers into private subnets in separate Availability Zones inside a VPC. The
-  default Domain Administrator password will be the one retrieved from the instance.  For adding members to the domain, ensure that they are launched
-  using the domain member security group created by this template and then configure them to use the AD instances fixed private IP addresses as the DNS
-  server. **WARNING** This template creates Amazon EC2 Windows instance and related resources. You will be billed for the AWS resources used if you
-  create a stack from this template. (qs-1qup6rae5)
+Description: https://learn.cantrill.io - Advanced Demo - Hybrid Active Directory ONPREM NESTED AD
 Parameters:
   ADServer1InstanceType:
     Default: t3.large
@@ -130,6 +125,11 @@ Parameters:
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
 Resources:
+  STACKLOGS:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: !Sub '/learncantrill/HYBRIDDIR-NESTED-AD/${AWS::StackName}'
+      RetentionInDays: 30
   DHCPOptions:
     DependsOn:
       - DomainController1
