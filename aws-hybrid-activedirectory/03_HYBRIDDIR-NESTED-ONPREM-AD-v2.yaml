@@ -122,6 +122,9 @@ Parameters:
     Default: /aws/service/ami-windows-latest/Windows_Server-2022-English-Full-Base
     Description: System Manager parameter value for latest Windows Server AMI
     Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+  InstanceSGID:
+    Description: Default ONPREM Instance Security Group
+    Type: String
 Conditions:
   UsingDefaultBucket: !Equals [!Ref QSS3BucketName, 'aws-quickstart']
 Resources:
@@ -729,7 +732,7 @@ Resources:
             KmsKeyId: !Ref 'EbsEncryptionKmsKeyId'
             DeleteOnTermination: true
       SecurityGroupIds:
-        - !Ref 'DomainControllersSG'
+        - !Ref 'InstanceSGID'
       PrivateIpAddress: !Ref 'ADServer1PrivateIP'
       KeyName: !Ref 'KeyPairName'
   DomainController2:
@@ -765,7 +768,7 @@ Resources:
             KmsKeyId: !Ref 'EbsEncryptionKmsKeyId'
             DeleteOnTermination: true
       SecurityGroupIds:
-        - !Ref 'DomainControllersSG'
+        - !Ref 'InstanceSGID'
       PrivateIpAddress: !Ref 'ADServer2PrivateIP'
       KeyName: !Ref 'KeyPairName'
       UserData: !Base64
@@ -814,178 +817,8 @@ Resources:
             - '}'
             - "\n"
             - "</powershell>\n"
-  DomainControllersSG:
-    Type: AWS::EC2::SecurityGroup
-    Metadata:
-      cfn_nag:
-        rules_to_suppress:
-          - id: F1000
-            reason: "Standard Amazon practice"
-          - id: W42
-            reason: "Standard Amazon practice"
-          - id: W27
-            reason: "Standard Amazon practice"
-    Properties:
-      GroupDescription: Domain Controllers Security Group
-      VpcId: !Ref VPCID
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          Description: DNS
-          FromPort: 53
-          ToPort: 53
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: udp
-          Description: DNS
-          FromPort: 53
-          ToPort: 53
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: Kerberos
-          FromPort: 88
-          ToPort: 88
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: udp
-          Description: Kerberos
-          FromPort: 88
-          ToPort: 88
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: udp
-          Description: Windows Time
-          FromPort: 123
-          ToPort: 123
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: RPC Port
-          FromPort: 135
-          ToPort: 135
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: udp
-          Description: Netlogon
-          FromPort: 138
-          ToPort: 138
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: LDAP
-          FromPort: 389
-          ToPort: 389
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: udp
-          Description: LDAP
-          FromPort: 389
-          ToPort: 389
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: SMB
-          FromPort: 445
-          ToPort: 445
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: udp
-          Description: SMB
-          FromPort: 445
-          ToPort: 445
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: udp
-          Description: Kerberos Set & Change Password
-          FromPort: 464
-          ToPort: 464
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: Kerberos Set & Change Password
-          FromPort: 464
-          ToPort: 464
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: LDAP over SSL
-          FromPort: 636
-          ToPort: 636
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: LDAP Global Catalog
-          FromPort: 3268
-          ToPort: 3268
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: LDAP Global Catalog over SSL
-          FromPort: 3269
-          ToPort: 3269
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: RDP
-          FromPort: 3389
-          ToPort: 3389
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: WinRM
-          FromPort: 5985
-          ToPort: 5985
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: SOAP ADWS
-          FromPort: 9389
-          ToPort: 9389
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: tcp
-          Description: Random RPC
-          FromPort: 49152
-          ToPort: 65535
-          SourceSecurityGroupId: !Ref DomainMembersSG
-        - IpProtocol: udp
-          Description: Random RPC
-          FromPort: 49152
-          ToPort: 65535
-          SourceSecurityGroupId: !Ref DomainMembersSG
-      Tags:
-        - Key: Name
-          Value: DomainControllersSecurityGroup
-  DomainMembersSG:
-    Type: AWS::EC2::SecurityGroup
-    Metadata:
-      cfn_nag:
-        rules_to_suppress:
-          - id: F1000
-            reason: "Standard Amazon practice"
-    Properties:
-      GroupDescription: Domain Members
-      VpcId: !Ref VPCID
-      Tags:
-        - Key: Name
-          Value: DomainMembersSecurityGroup
-  DomainMembersIngressRDP:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      Description: RDP
-      GroupId: !Ref DomainMembersSG
-      IpProtocol: tcp
-      FromPort: 3389
-      ToPort: 3389
-      SourceSecurityGroupId: !Ref DomainMembersSG
-  DomainMembersIngressWinRMHTTP:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      Description: WinRM-HTTP
-      GroupId: !Ref DomainMembersSG
-      IpProtocol: tcp
-      FromPort: 5985
-      ToPort: 5985
-      SourceSecurityGroupId: !Ref DomainMembersSG
-  DomainMembersIngressWinRMHTTPS:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      Description: WinRM-HTTPS
-      GroupId: !Ref DomainMembersSG
-      IpProtocol: tcp
-      FromPort: 5986
-      ToPort: 5986
-      SourceSecurityGroupId: !Ref DomainMembersSG
-  DCSecurityGroupIngress:
-    Type: AWS::EC2::SecurityGroupIngress
-    Properties:
-      Description: Security Group Rule between Domain Controllers
-      GroupId: !Ref DomainControllersSG
-      IpProtocol: '-1'
-      FromPort: -1
-      ToPort: -1
-      SourceSecurityGroupId: !Ref DomainControllersSG
+  
+  
 Outputs:
   ADSecretsArn:
     Description: Alternate AD User Secrets ARN
@@ -999,9 +832,6 @@ Outputs:
   DomainAdmin:
     Description: Domain administrator account
     Value: !Sub ${DomainNetBIOSName}\${DomainAdminUser}
-  DomainControllersSGID:
-    Description: Domain Controllers Security Group ID
-    Value: !Ref 'DomainControllersSG'
   DomainMemberSGID:
     Description: Domain Member Security Group ID
     Value: !Ref 'DomainMembersSG'
