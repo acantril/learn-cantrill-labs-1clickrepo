@@ -376,7 +376,7 @@ Resources:
                   } 
               CloudWatchOutputConfig:
                 CloudWatchOutputEnabled: true
-                CloudWatchLogGroupName: !Sub /aws/Quick_Start/${AWS::StackName}
+                CloudWatchLogGroupName: !Ref 'STACKLOGS'
             nextStep: configureInstance
           - name: configureInstance
             action: aws:runCommand
@@ -397,7 +397,7 @@ Resources:
                   Invoke-LcmConfig
               CloudWatchOutputConfig:
                 CloudWatchOutputEnabled: true
-                CloudWatchLogGroupName: !Sub /aws/Quick_Start/${AWS::StackName}
+                CloudWatchLogGroupName: !Ref 'STACKLOGS'
             nextStep: configureDc1Mof
           - name: configureDc1Mof
             action: aws:runCommand
@@ -420,7 +420,7 @@ Resources:
                   Set-DscConfiguration -AltAdminCredentials $AltSecret.Credentials -AltAdminUserName $AltSecret.Username -DaCredentials $DaSecret.DomainCredentials -DeploymentType 'FirstDc' -DomainDNSName '{{DomainDNSName}}' -DomainNetBIOSName '{{DomainNetBIOSName}}' -GatewayAddress $EniConfig.GatewayAddress -InstanceIP $EniConfig.IpAddress -InstanceNetBIOSName '{{ADServer1NetBIOSName}}' -LaCredentials $DaSecret.Credentials -MacAddress $EniConfig.MacAddress -RestoreModeCredentials $RmSecret.Credentials -SiteName '{{global:REGION}}' -VPCCIDR '{{VPCCIDR}}'
               CloudWatchOutputConfig:
                 CloudWatchOutputEnabled: true
-                CloudWatchLogGroupName: !Sub /aws/Quick_Start/${AWS::StackName}
+                CloudWatchLogGroupName: !Ref 'STACKLOGS'
             nextStep: runDc1Mof
           - name: runDc1Mof
             action: aws:runCommand
@@ -441,7 +441,7 @@ Resources:
                   Invoke-DscStatusCheck
               CloudWatchOutputConfig:
                 CloudWatchOutputEnabled: true
-                CloudWatchLogGroupName: !Sub /aws/Quick_Start/${AWS::StackName}
+                CloudWatchLogGroupName: !Ref 'STACKLOGS'
             nextStep: configureDc2Mof
           - name: configureDc2Mof
             action: aws:runCommand
@@ -463,7 +463,7 @@ Resources:
                   Set-DscConfiguration -DaCredentials $DaSecret.DomainCredentials -DeploymentType 'SecondaryDC' -DomainDNSName '{{DomainDNSName}}' -DomainNetBIOSName '{{DomainNetBIOSName}}' -ExistingDcIP01 '{{ADServer1PrivateIP}}' -GatewayAddress $EniConfig.GatewayAddress -InstanceIP $EniConfig.IpAddress -InstanceIPDns $EniConfig.DnsIpAddress -InstanceNetBIOSName '{{ADServer2NetBIOSName}}' -MacAddress $EniConfig.MacAddress -RestoreModeCredentials $RmSecret.Credentials
               CloudWatchOutputConfig:
                 CloudWatchOutputEnabled: true
-                CloudWatchLogGroupName: !Sub /aws/Quick_Start/${AWS::StackName}
+                CloudWatchLogGroupName: !Ref 'STACKLOGS'
             nextStep: runDc2Mof
           - name: runDc2Mof
             action: aws:runCommand
@@ -484,7 +484,7 @@ Resources:
                   Invoke-DscStatusCheck
               CloudWatchOutputConfig:
                 CloudWatchOutputEnabled: true
-                CloudWatchLogGroupName: !Sub /aws/Quick_Start/${AWS::StackName}
+                CloudWatchLogGroupName: !Ref 'STACKLOGS'
             nextStep: DisableFW
           - name: DisableFW
             action: aws:runCommand
@@ -502,7 +502,7 @@ Resources:
                   }
               CloudWatchOutputConfig:
                 CloudWatchOutputEnabled: true
-                CloudWatchLogGroupName: !Sub /aws/Quick_Start/${AWS::StackName}
+                CloudWatchLogGroupName: !Ref 'STACKLOGS'
             nextStep: DnsConfig
           - name: DnsConfig
             action: aws:runCommand
@@ -523,7 +523,7 @@ Resources:
                   Set-DnsDscConfiguration -AD1Deployment -ADServer1NetBIOSName '{{ADServer1NetBIOSName}}' -ADServer2NetBIOSName '{{ADServer2NetBIOSName}}' -ADServer1PrivateIP '{{ADServer1PrivateIP}}' -ADServer2PrivateIP '{{ADServer2PrivateIP}}' -DomainDNSName '{{DomainDNSName}}' -DaCredentials $DaSecret.Credentials -VPCCIDR '{{VPCCIDR}}'
               CloudWatchOutputConfig:
                 CloudWatchOutputEnabled: true
-                CloudWatchLogGroupName: !Sub /aws/Quick_Start/${AWS::StackName}
+                CloudWatchLogGroupName: !Ref 'STACKLOGS'
             nextStep: PostConfig
           - name: PostConfig
             action: aws:runCommand
@@ -543,7 +543,7 @@ Resources:
                   Invoke-Cleanup -VPCCIDR '{{VPCCIDR}}'
               CloudWatchOutputConfig:
                 CloudWatchOutputEnabled: true
-                CloudWatchLogGroupName: !Sub /aws/Quick_Start/${AWS::StackName}
+                CloudWatchLogGroupName: !Ref 'STACKLOGS'
           - name: CFNSignalEnd
             action: aws:branch
             inputs:
