@@ -817,8 +817,6 @@ Resources:
             - '}'
             - "\n"
             - "</powershell>\n"
-  
-  
 Outputs:
   ADSecretsArn:
     Description: Alternate AD User Secrets ARN
@@ -832,6 +830,4 @@ Outputs:
   DomainAdmin:
     Description: Domain administrator account
     Value: !Sub ${DomainNetBIOSName}\${DomainAdminUser}
-  DomainMemberSGID:
-    Description: Domain Member Security Group ID
-    Value: !Ref 'DomainMembersSG'
+
