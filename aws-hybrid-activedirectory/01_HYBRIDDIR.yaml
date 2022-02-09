@@ -229,8 +229,8 @@ Resources:
         PrivateSubnet1ID: !GetAtt 'ONPREMVPC.Outputs.PrivateSubnetAID'
         PrivateSubnet2ID: !GetAtt 'ONPREMVPC.Outputs.PrivateSubnetBID'
         PublicSubnetID: !GetAtt 'ONPREMVPC.Outputs.PublicSubnetAID'
-        ADAdminPassword: !Ref ADAdminPassword
-        ADAdminUser: !Ref ADAdminUser
+        DomainAdminPassword: !Ref DomainAdminPassword
+        DomainAdminUser: !Ref DomainAdminUser
         DomainDNSName: !Ref DomainDNSName
         DomainNetBIOSName: !Ref DomainNetBIOSName
         InstanceSGID: !GetAtt 'ONPREMVPC.Outputs.InstanceSGID'
