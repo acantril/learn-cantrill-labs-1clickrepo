@@ -206,8 +206,8 @@ Resources:
     Properties:
       TemplateURL: https://learn-cantrill-labs.s3.amazonaws.com/aws-hybrid-activedirectory/03_HYBRIDDIR-NESTED-ONPREM-AD-v2.yaml
       Parameters:
-        ADServer1InstanceType: !Ref ADInstanceType
-        ADServer2InstanceType: !Ref ADInstanceType
+        ADServer1InstanceType: !Ref ADServer1InstanceType
+        ADServer2InstanceType: !Ref ADServer2InstanceType
         ADServer1NetBIOSName: !Ref DC1NetBIOSName
         ADServer2NetBIOSName: !Ref DC2NetBIOSName
         ADServer1PrivateIP: !Ref DC1PRIVATEIP
