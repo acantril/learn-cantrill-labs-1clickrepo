@@ -222,9 +222,9 @@ Resources:
         VPCCIDR: !Ref ONPREMVPCCIDR
         VPCID: !GetAtt 'ONPREMVPC.Outputs.VPCID'
         InstanceSGID: !GetAtt 'ONPREMVPC.Outputs.InstanceSGID'
-        QSS3BucketName: !Ref QSS3BucketName
-        QSS3BucketRegion: !Ref QSS3BucketRegion
-        QSS3KeyPrefix: !Sub '${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/'
+        QSS3BucketName: !Ref 'QSS3BucketName'
+        QSS3BucketRegion: !Ref 'QSS3BucketRegion'
+        QSS3KeyPrefix: !Ref 'QSS3KeyPrefix'
         KeyPairName: !Ref KeyPairName
   ONPREMCOMPUTE:
     Type: AWS::CloudFormation::Stack
