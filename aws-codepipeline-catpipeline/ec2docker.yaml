@@ -226,6 +226,10 @@ Resources:
             Version: 2012-10-17
             Statement:
               - Effect: Allow
+                Action:
+                  - 'ecr:*'
+                Resource: '*'
+              - Effect: Allow
                 Action: 
                   - 'ssm:DescribeAssociation'
                   - 'ssm:GetDeployablePatchSnapshotForInstance'
