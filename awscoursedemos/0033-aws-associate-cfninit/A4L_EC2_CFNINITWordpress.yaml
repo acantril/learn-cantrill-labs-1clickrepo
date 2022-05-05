@@ -25,6 +25,7 @@ Parameters:
     MaxLength: '41'
     MinLength: '8'
     NoEcho: 'true'
+    Default: '4n1m4l$4L1f3'
     Type: String
   DBRootPassword:
     AllowedPattern: '[a-zA-Z0-9]*'
@@ -33,6 +34,7 @@ Parameters:
     MaxLength: '41'
     MinLength: '8'
     NoEcho: 'true'
+    Default: '4n1m4l$4L1f3'
     Type: String
   DBUser:
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
@@ -42,7 +44,6 @@ Parameters:
     Default: a4lwordpress
     MaxLength: '16'
     MinLength: '1'
-    NoEcho: 'true'
     Type: String
 Resources:
   EC2Instance:
