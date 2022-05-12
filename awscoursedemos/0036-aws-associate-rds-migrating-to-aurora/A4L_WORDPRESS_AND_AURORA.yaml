@@ -1,4 +1,3 @@
-
 Description:  Animals4Life base VPC Template + Boostrapped Wordpress + Aurora DB Cluster (2.07.1) Instance
 Parameters:
   LatestAmiId:
