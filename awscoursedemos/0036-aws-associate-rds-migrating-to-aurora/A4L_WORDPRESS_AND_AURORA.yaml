@@ -1,4 +1,4 @@
-Description:  Animals4Life base VPC Template + Boostrapped Wordpress + Aurora DB Cluster (8.0.mysql_aurora.3.01.0) Instance
+Description:  Animals4Life base VPC Template + Boostrapped Wordpress + Aurora DB Cluster (8.0.mysql_aurora.3.02.0) Instance
 Parameters:
   LatestAmiId:
     Description: AMI for Wordpess Instance (default is latest AmaLinux2)
@@ -35,7 +35,7 @@ Parameters:
     Type: String
   DBVersion:
     Description: 'The version of Aurora to use (this can cause compatibility impacts - be certain !'
-    Default: "8.0.mysql_aurora.3.01.0"
+    Default: "8.0.mysql_aurora.3.02.0"
     Type: String
   DatabaseRestoreSnapshot:
     Description: The snapshot name to restore from - Leave Blank for a new DB, USE ARN for a MIGRATION of a non aurora snapshot or name for aurora
