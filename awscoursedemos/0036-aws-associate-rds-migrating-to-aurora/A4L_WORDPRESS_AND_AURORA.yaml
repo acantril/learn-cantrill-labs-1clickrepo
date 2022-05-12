@@ -35,7 +35,7 @@ Parameters:
     MinLength: '1'
     Type: String
   DBVersion:
-    Description: The version of Aurora to use (this can cause compatibility impacts - be certain !
+    Description: 'The version of Aurora to use (this can cause compatibility impacts - be certain !'
     Default: "8.0.mysql_aurora.3.01.0"
     Type: String
   DatabaseRestoreSnapshot:
