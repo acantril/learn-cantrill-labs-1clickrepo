@@ -36,7 +36,7 @@ Parameters:
     Type: String
   DBVersion:
     Description: The version of Aurora to use (this can cause compatibility impacts - be certain !
-    Default: "3.01.0"
+    Default: "8.0.mysql_aurora.3.01.0"
     Type: String
   DatabaseRestoreSnapshot:
     Description: The snapshot name to restore from - Leave Blank for a new DB, USE ARN for a MIGRATION of a non aurora snapshot or name for aurora
@@ -406,7 +406,7 @@ Resources:
       DatabaseName: !If [NoSnapshot,  !Ref DBName, !Ref 'AWS::NoValue' ]
       Engine: 'aurora-mysql'
       EngineMode: 'provisioned'
-      EngineVersion: "8.0.mysql_aurora.3.01.0"
+      EngineVersion: !Ref DBVersion
       MasterUserPassword: !If [NoSnapshot, !Ref DBPassword, !Ref 'AWS::NoValue' ]
       MasterUsername: !If [NoSnapshot, !Ref DBUser, !Ref 'AWS::NoValue' ]
       SnapshotIdentifier: !If [ NoSnapshot, !Ref 'AWS::NoValue', !Ref DatabaseRestoreSnapshot]
