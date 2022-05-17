@@ -40,4 +40,11 @@ Resources:
               - Effect: Allow
                 Action: ['s3:GetObject', 's3:PutObject']
                 Resource: !Join ["", [!GetAtt petpics3.Arn, "/*"]]
+Outputs:
+  Bucket1URL:
+    Value: !Join [ "", [ "https://us-east-1.console.aws.amazon.com/s3/buckets/", !Ref petpics1, "?region=us-east-1&tab=objects" ] ]
+  Bucket2URL:
+    Value: !Join [ "", [ "https://us-east-1.console.aws.amazon.com/s3/buckets/", !Ref petpics2, "?region=us-east-1&tab=objects" ] ]
+  Bucket3URL:
+    Value: !Join [ "", [ "https://us-east-1.console.aws.amazon.com/s3/buckets/", !Ref petpics3, "?region=us-east-1&tab=objects" ] ]
 
