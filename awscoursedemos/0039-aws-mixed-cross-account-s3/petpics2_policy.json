@@ -1,0 +1,21 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Effect": "Allow",
+          "Principal": {
+              "AWS": "arn:aws:iam::REPLACEMEMANAGEMENTACCOUNTID:user/iamadmin"
+          },
+          "Action": [
+              "s3:GetObject",
+              "s3:PutObject",
+              "s3:PutObjectAcl",
+              "s3:ListBucket"
+          ],
+          "Resource": [
+              "arn:aws:s3:::REPLACEME_BUCKETNAME/*",
+              "arn:aws:s3:::REPLACEME_BUCKETNAME"
+          ]
+      }
+  ]
+}
