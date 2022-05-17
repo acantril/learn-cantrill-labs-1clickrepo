@@ -34,6 +34,9 @@ Parameters:
     MaxLength: '16'
     MinLength: '1'
     Type: String
+  DBInstanceType:
+    Type: String
+    Default: 'db.t3.medium'
   DatabaseRestoreSnapshot:
     Description: The snapshot name to restore from - Leave Blank for a new DB, USE ARN for a MIGRATION of a non aurora snapshot or name for aurora
     Type: String
@@ -423,7 +426,7 @@ Resources:
       AllowMajorVersionUpgrade: false
       AutoMinorVersionUpgrade: true
       DBClusterIdentifier: !Ref DBCluster
-      DBInstanceClass: db.t3.small
+      DBInstanceClass: !Ref DBInstanceType
       DBSubnetGroupName: !Ref DBSubnetGroup
       Engine: 'aurora-mysql'
       Tags:
@@ -436,7 +439,7 @@ Resources:
       AllowMajorVersionUpgrade: false
       AutoMinorVersionUpgrade: true
       DBClusterIdentifier: !Ref DBCluster
-      DBInstanceClass: db.t3.small
+      DBInstanceClass: !Ref DBInstanceType
       DBSubnetGroupName: !Ref DBSubnetGroup
       Engine: 'aurora-mysql'
       Tags:
