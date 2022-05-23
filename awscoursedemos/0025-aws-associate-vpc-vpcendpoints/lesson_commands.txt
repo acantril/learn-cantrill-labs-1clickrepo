@@ -7,21 +7,11 @@ aws s3 cp s3://bucketname/supersecret.txt supersecret.txt
 
 # Part 2
 
-aws sns publish \
-    --message "Cats are the best" \
-    --phone-number +61498006755 \
-    --region us-east-1
+aws sns publish --message "Cats are the best" --phone-number +REPLACEME --region us-east-1
 
-aws sns publish \
-    --message "Cats are the best" \
-    --phone-number +61498006755 \
-    --region us-east-1 \
-    --endpoint-url https://ENDPOINTDNSHERE
+aws sns publish --message "Cats are the best" --phone-number +REPLACEME --region us-east-1 --endpoint-url https://ENDPOINTDNSHERE
 
-aws sns publish \
-    --message "Cats are the best" \
-    --phone-number +61498006755 \
-    --region us-east-1
+aws sns publish --message "Cats are the best" --phone-number +REPLACEME --region us-east-1
 
 # Part 3
 
