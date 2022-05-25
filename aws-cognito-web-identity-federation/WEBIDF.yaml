@@ -9,6 +9,19 @@ Parameters:
     Type: String
     Default: aws-cognito-web-identity-federation/appbucket
 Resources:
+  WebAppCDN:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: 'true'
+        DefaultCacheBehavior:
+          ForwardedValues:
+            QueryString: 'true'
+          TargetOriginId: only-origin
+          ViewerProtocolPolicy: https-only
+        DefaultRootObject: index.html
+        Origins:
+          - DomainName: !GetAtt appbucket.DomainName
   patchesprivatebucket:
     Type: AWS::S3::Bucket
     Properties:
