@@ -23,6 +23,7 @@ Resources:
         Origins:
           - DomainName: !GetAtt appbucket.DomainName
             Id: "appbucket"
+            S3OriginConfig: ""
   patchesprivatebucket:
     Type: AWS::S3::Bucket
     Properties:
