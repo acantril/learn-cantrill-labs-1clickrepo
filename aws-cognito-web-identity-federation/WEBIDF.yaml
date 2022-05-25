@@ -22,7 +22,7 @@ Resources:
           ViewerProtocolPolicy: https-only
         DefaultRootObject: index.html
         Origins:
-          - DomainName: !GetAtt appbucket.RegionalDomainName
+          - DomainName: !Ref appbucket
             Id: "appbucket"
             S3OriginConfig: 
               OriginAccessIdentity: ""
