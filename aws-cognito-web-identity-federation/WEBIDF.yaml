@@ -22,6 +22,7 @@ Resources:
         DefaultRootObject: index.html
         Origins:
           - DomainName: !GetAtt appbucket.DomainName
+            Id: "appbucket"
   patchesprivatebucket:
     Type: AWS::S3::Bucket
     Properties:
