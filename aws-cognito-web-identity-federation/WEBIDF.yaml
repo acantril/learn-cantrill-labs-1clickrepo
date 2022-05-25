@@ -18,11 +18,11 @@ Resources:
         DefaultCacheBehavior:
           ForwardedValues:
             QueryString: 'true'
-          TargetOriginId: only-origin
+          TargetOriginId: appbucket
           ViewerProtocolPolicy: https-only
         DefaultRootObject: index.html
         Origins:
-          - DomainName: !Ref appbucket
+          - DomainName: !GetAtt appbucket.DomainName
             Id: "appbucket"
             S3OriginConfig: 
               OriginAccessIdentity: ""
