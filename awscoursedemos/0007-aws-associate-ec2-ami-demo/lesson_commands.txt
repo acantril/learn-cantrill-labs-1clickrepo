@@ -4,6 +4,10 @@
 # DBPassword=password for the mariadb user for wordpress
 # DBRootPassword = root password for mariadb
 
+# IMPORTANT .... I CHANGED THE PLACEHOLDERS TO ACTUAL PASSWORDS
+# You don't need to adjust these like the video shows
+# just paste DBPassword and DBRootPassword along with the other two
+
 # STEP 1 - Configure Authentication Variables which are used below
 DBName='a4lwordpress'
 DBUser='a4lwordpress'
