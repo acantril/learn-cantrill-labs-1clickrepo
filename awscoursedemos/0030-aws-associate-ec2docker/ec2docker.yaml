@@ -188,7 +188,8 @@ Resources:
           #!/bin/bash -xe
           yum install wget git -y
           cd /home/ec2-user/
-          git clone https://github.com/acantril/aws-sa-associate-saac02.git
+          wget https://learn-cantrill-labs.s3.amazonaws.com/awscoursedemos/0030-aws-associate-ec2docker/container.zip
+          unzip container.zip
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:

@@ -9,7 +9,7 @@ LOGOUT and login
 sudo su - ec2-user
 
 # Build Docker Image
-cd aws-sa-associate-saac02/09-Containers-ECS/container_of_cats/container
+cd container
 docker build -t containerofcats .
 docker images --filter reference=containerofcats
 
