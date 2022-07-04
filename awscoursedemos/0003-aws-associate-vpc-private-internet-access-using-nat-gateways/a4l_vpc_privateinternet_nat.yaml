@@ -342,6 +342,10 @@ Resources:
       Timeout: 30
   A4LINTERNALTEST:
     Type: AWS::EC2::Instance
+    DependsOn: 
+    - ssminterfaceendpoint
+    - ssmec2messagesinterfaceendpoint
+    - ssmmessagesinterfaceendpoint
     Properties:
       InstanceType: "t2.micro"
       ImageId: !Ref LatestAmiId
@@ -368,6 +372,12 @@ Resources:
           FromPort: '22'
           ToPort: '22'
           CidrIpv6: ::/0
+  InstanceSecurityGroupSelfReferenceRule:
+    Type: "AWS::EC2::SecurityGroupIngress"
+    Properties:
+      GroupId: !Ref InstanceSecurityGroup
+      IpProtocol: '-1'
+      SourceSecurityGroupId: !Ref InstanceSecurityGroup
   SessionManagerRole:
     Type: 'AWS::IAM::Role'
     Properties:
@@ -426,3 +436,42 @@ Resources:
       Path: /
       Roles:
         - !Ref SessionManagerRole
+  ssminterfaceendpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcEndpointType: "Interface"
+      PrivateDnsEnabled: "True"
+      SubnetIds:
+        - !Ref SubnetAPPA
+        - !Ref SubnetAPPB
+        - !Ref SubnetAPPC
+      SecurityGroupIds:
+        - !Ref InstanceSecurityGroup
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.ssm
+      VpcId: !Ref VPC
+  ssmec2messagesinterfaceendpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcEndpointType: "Interface"
+      PrivateDnsEnabled: "True"
+      SubnetIds:
+        - !Ref SubnetAPPA
+        - !Ref SubnetAPPB
+        - !Ref SubnetAPPC
+      SecurityGroupIds:
+        - !Ref InstanceSecurityGroup
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.ec2messages
+      VpcId: !Ref VPC
+  ssmmessagesinterfaceendpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcEndpointType: "Interface"
+      PrivateDnsEnabled: "True"
+      SubnetIds:
+        - !Ref SubnetAPPA
+        - !Ref SubnetAPPB
+        - !Ref SubnetAPPC
+      SecurityGroupIds:
+        - !Ref InstanceSecurityGroup
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.ssmmessages
+      VpcId: !Ref VPC
