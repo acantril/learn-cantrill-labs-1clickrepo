@@ -1,0 +1,14 @@
+{
+"Resources": {
+  "Bucket": {
+    "Type": "AWS::S3::Bucket"
+  },
+  "Instance": {
+    "Type": "AWS::EC2::Instance",
+    "Properties": {
+      "InstanceType": "t2.micro",
+      "ImageId": "ami-090fa75af13c156b4"
+    }
+  }
+}
+}
