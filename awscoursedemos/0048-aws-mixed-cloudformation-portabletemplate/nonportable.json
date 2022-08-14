@@ -3,7 +3,7 @@
   "Bucket": {
     "Type": "AWS::S3::Bucket",
     "Properties": {
-      "BucketName": "accatpics13333337"
+      "BucketName": "accatpics1333333337"
     }
   },
   "Instance": {
