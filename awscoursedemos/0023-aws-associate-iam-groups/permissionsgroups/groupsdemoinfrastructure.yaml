@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  This template implements an IAM user 'Sally'
+  An S3 bucket for cat pictues
+  An S3 bucket for dog pictures
+  An S3 bucket for other animals
+  And permissions appropriate for Sally.
+Parameters:
+  sallypassword:
+    Description: IAM User Sallys Password
+    Default: '4n1m4l54L1f3'
+    Type: String
+Resources:
+  catpics:
+    Type:  AWS::S3::Bucket
+  animalpics:
+    Type:  AWS::S3::Bucket
+  sally:
+    Type: AWS::IAM::User
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/IAMUserChangePassword
+      LoginProfile:
+        Password: !Ref sallypassword
+        PasswordResetRequired: "false"
+  AllowAllS3ExceptCats:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: Allow access to all S3 buckets, except catpics
+      PolicyDocument: 
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: 's3:*'
+            Resource: '*' 
+          - Effect: Deny
+            Action: 's3:*'
+            Resource: [ !GetAtt catpics.Arn, !Join ['', [!GetAtt catpics.Arn, '/*']]]
+Outputs:
+  catpicsbucketname:
+    Description: Bucketname for catpictures (the best animal!)
+    Value: !Ref catpics
+  animalpicsbucketname:
+    Description: Bucketname for animalpics (the almost best animals!)
+    Value: !Ref animalpics
+  sallyusername:
+    Description: IAM Username for Sally
+    Value: !Ref sally
