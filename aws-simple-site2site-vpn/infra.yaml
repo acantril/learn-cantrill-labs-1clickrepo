@@ -413,6 +413,12 @@ Resources:
       Tags:
       - Key: Name
         Value: onprem Router SG
+      SecurityGroupIngress: 
+        - Description: 'Allow tcp/443 from anywhere'
+          IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: '0.0.0.0/0'
   onpremRouterSGSelfReference:
     Type: "AWS::EC2::SecurityGroupIngress"
     Properties:
