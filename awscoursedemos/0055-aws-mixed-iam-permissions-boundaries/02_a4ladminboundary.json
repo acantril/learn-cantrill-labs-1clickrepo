@@ -14,7 +14,7 @@
           ],
           "Resource": "*",
           "Condition": {"StringEquals": 
-              {"iam:PermissionsBoundary": "arn:aws:iam::MASTERACCOUNTNUMBER:policy/a4luserboundary"}}
+              {"iam:PermissionsBoundary": "arn:aws:iam::MANAGEMENTACCOUNTNUMBER:policy/a4luserboundary"}}
       },
       {
           "Sid": "CloudWatchAndOtherIAMTasks",
@@ -53,7 +53,7 @@
               "iam:SimulatePrincipalPolicy",
               "iam:SimulateCustomPolicy" 
           ],
-          "NotResource": "arn:aws:iam::MASTERACCOUNTNUMBER:user/bob"
+          "NotResource": "arn:aws:iam::MANAGEMENTACCOUNTNUMBER:user/bob"
       },
       {
           "Sid": "NoBoundaryPolicyEdit",
@@ -65,8 +65,8 @@
               "iam:SetDefaultPolicyVersion"
           ],
           "Resource": [
-              "arn:aws:iam::MASTERACCOUNTNUMBER:policy/a4luserboundary",
-              "arn:aws:iam::MASTERACCOUNTNUMBER:policy/a4ladminboundary"
+              "arn:aws:iam::MANAGEMENTACCOUNTNUMBER:policy/a4luserboundary",
+              "arn:aws:iam::MANAGEMENTACCOUNTNUMBER:policy/a4ladminboundary"
           ]
       },
       {
