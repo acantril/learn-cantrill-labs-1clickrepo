@@ -1,5 +1,5 @@
 
-Description:  Animals4Life base VPC Template + EFS + Aurora DB Cluster (2.07.1) Instance
+Description:  Animals4Life base VPC Template + EFS + Aurora DB Cluster
 Parameters:
   LatestAmiId:
     Description: AMI for Wordpess Instance (default is latest AmaLinux2)
