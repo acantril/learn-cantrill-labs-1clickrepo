@@ -7,8 +7,8 @@
 # STEP 1 - Configure Authentication Variables which are used below
 DBName='a4lwordpress'
 DBUser='a4lwordpress'
-DBPassword='REPLACEME'
-DBRootPassword='REPLACEME'
+DBPassword='4n1m4l$4L1f3'
+DBRootPassword='4n1m4l$4L1f3'
 
 # STEP 2 - Install system software - including Web and DB
 sudo yum install -y mariadb-server httpd wget
