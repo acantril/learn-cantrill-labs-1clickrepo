@@ -187,7 +187,7 @@ Resources:
             bgcolor=$(printf "%02x%02x%02x\n" $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)))
             instanceId=$(curl http://169.254.169.254/latest/meta-data/instance-id)
             wget -O /var/www/html/cat.gif "http://thecatapi.com/api/images/get?format=src&type=gif&api_key=8f7dc437-0b9b-47b8-a2c0-65925d593acf"
-            echo "<html><head>"
+            echo "<html><head>" >> /var/www/html/index.html
             echo "<meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store, must-revalidate\">" >> /var/www/html/index.html
             echo "<meta http-equiv=\"Pragma\" content=\"no-cache\">" >> /var/www/html/index.html
             echo "<meta http-equiv=\"Expires\" content=\"0\">" >> /var/www/html/index.html
