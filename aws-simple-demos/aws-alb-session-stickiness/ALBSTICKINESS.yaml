@@ -193,7 +193,7 @@ Resources:
             echo "<meta http-equiv=\"Expires\" content=\"0\">" >> /var/www/html/index.html
             echo "</head><body style=\"background-color:#$bgcolor;\">" >> /var/www/html/index.html
             echo "<center><h1>Instance ID : $instanceId</h1></center><br>" >> /var/www/html/index.html
-            echo "<center><img src=\"cat.gif\"></center>" >> /var/www/html/index.html
+            echo "<center><img src=\"cat.gif?nocache=<?php echo time(); ?>\">" >> /var/www/html/index.html
             echo "</body></html>" >> /var/www/html/index.html
 
             # Step 4 - permissions 
