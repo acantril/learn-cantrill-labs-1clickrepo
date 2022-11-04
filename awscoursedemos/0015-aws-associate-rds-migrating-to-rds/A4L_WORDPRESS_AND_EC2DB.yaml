@@ -452,7 +452,10 @@ Resources:
           Value: A4L-DB-Wordpress
       UserData:
         Fn::Base64: !Sub |
-          #!/bin/bash -xe      
+          #!/bin/bash -xe    
+          # System Updates
+          yum -y update
+          yum -y upgrade  
           # Begin Configuration
           yum -y install mariadb-server wget cowsay
           systemctl enable mariadb
