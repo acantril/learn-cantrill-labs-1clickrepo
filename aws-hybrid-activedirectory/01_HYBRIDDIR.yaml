@@ -204,7 +204,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     DependsOn: ONPREMVPC
     Properties:
-      TemplateURL: https://learn-cantrill-labs.s3.amazonaws.com/aws-hybrid-activedirectory/03_HYBRIDDIR-NESTED-ONPREM-AD-v2.yaml
+      TemplateURL: https://learn-cantrill-labs.s3.amazonaws.com/aws-hybrid-activedirectory/03_HYBRIDDIR-NESTED-ONPREM-AD-v3.yaml
       Parameters:
         ADServer1InstanceType: !Ref ADServer1InstanceType
         ADServer2InstanceType: !Ref ADServer2InstanceType
