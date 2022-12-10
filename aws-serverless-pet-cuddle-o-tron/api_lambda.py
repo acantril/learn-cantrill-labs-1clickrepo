@@ -22,12 +22,7 @@ def lambda_handler(event, context):
     checks = []
     checks.append('waitSeconds' in data)
     checks.append(type(data['waitSeconds']) == int)
-    checks.append('preference' in data)
     checks.append('message' in data)
-    if data.get('preference') == 'sms':
-        checks.append('phone' in data)
-    if data.get('preference') == 'email':
-        checks.append('email' in data)
 
     # if any checks fail, return error to API Gateway to return to client
     if False in checks:
