@@ -167,13 +167,35 @@ Resources:
               - 'sts:AssumeRole'
       Path: /
       Policies:
-        - PolicyName: ECSRolePolicy
+        - PolicyName: LambdaRolePolicy
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action:
                   - 'ssm:GetParameters'
+                Resource: '*'
+  LexV2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lexv2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: LexV2RolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'polly:SynthesizeSpeech'
                 Resource: '*'
   EC2Instance:
     Type: AWS::EC2::Instance
@@ -212,6 +234,9 @@ Outputs:
   LambdaRoleName:
     Value: !Ref LambdaRole
     Description: Name of the Lambda role
+  LexV2RoleName:
+    Value: !Ref LexV2Role
+    Description: Name of the Lex V2 role
   SecurityGroupName:
     Value: !Ref SecurityGroupPublic
     Description: Name of the Security Group
