@@ -302,3 +302,130 @@ Resources:
         ReadCapacityUnits: "5"
         WriteCapacityUnits: "5"
 
+######------------ API GATEWAY ------------######
+
+  VotingAppApiGateway:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: Voting-App-Api-Gateway
+      Parameters:
+        endpointConfigurationTypes: REGIONAL
+  
+  ApiGatewayResourceResults:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: VotingAppApiGateway
+      ParentId:
+        Fn::GetAtt:
+          - VotingAppApiGateway
+          - RootResourceId
+      PathPart: results
+
+  ApiGatewayResourceVote:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: VotingAppApiGateway
+      ParentId:
+        Fn::GetAtt:
+          - VotingAppApiGateway
+          - RootResourceId
+      PathPart: vote
+      
+  ApiGatewayMethodResults:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId:
+        Ref: VotingAppApiGateway
+      ResourceId:
+        Ref: ApiGatewayResourceResults
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Sub  "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:voting-app-fetch-results/invocations"
+    DependsOn: VotingAppFetchResultsLambda  
+    
+  ApiGatewayMethodVote:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId:
+        Ref: VotingAppApiGateway
+      ResourceId:
+        Ref: ApiGatewayResourceVote
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub  "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:voting-app-store-vote/invocations"
+    DependsOn: VotingAppStoreVoteLambda
+    
+  LambdaPermissionStoreVote:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: voting-app-store-vote
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VotingAppApiGateway}/*/*"
+      
+  LambdaPermissionFetchResults:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: voting-app-fetch-results
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VotingAppApiGateway}/*/*"   
+      
+######------------ S3 Bucket ------------######
+
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+    DeletionPolicy: Retain
+  BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref S3Bucket
+                - /*
+      Bucket: !Ref S3Bucket
+
+######------------ Cloud9 IDE ------------######
+
+  Cloud9IDE:
+    Type: AWS::Cloud9::EnvironmentEC2
+    Properties: 
+      AutomaticStopTimeMinutes: 30
+      ConnectionType: CONNECT_SSM
+      Description: Cloud9 IDE for updaing the react application code with API endpoints and copy website content to S3 bucket
+      InstanceType: t2.micro
+      Name: VotingAppCloud9IDE
+
+######------------ OUTPUTS ------------######
+
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt
+      - S3Bucket
+      - WebsiteURL
+    Description: URL for website hosted on S3
+  S3BucketSecureURL:
+    Value: !Ref S3Bucket
+    Description: Name of S3 bucket to hold website content
