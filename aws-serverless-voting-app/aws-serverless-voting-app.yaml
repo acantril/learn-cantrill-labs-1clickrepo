@@ -310,7 +310,8 @@ Resources:
       Name: Voting-App-Api-Gateway
       Parameters:
         endpointConfigurationTypes: REGIONAL
-  
+    DependsOn: VotingAppFetchResultsLambda
+    
   ApiGatewayResourceResults:
     Type: AWS::ApiGateway::Resource
     Properties:
@@ -321,7 +322,8 @@ Resources:
           - VotingAppApiGateway
           - RootResourceId
       PathPart: results
-
+    DependsOn: VotingAppFetchResultsLambda
+    
   ApiGatewayResourceVote:
     Type: AWS::ApiGateway::Resource
     Properties:
@@ -332,7 +334,8 @@ Resources:
           - VotingAppApiGateway
           - RootResourceId
       PathPart: vote
-      
+    DependsOn: VotingAppStoreVoteLambda
+    
   ApiGatewayMethodResults:
     Type: AWS::ApiGateway::Method
     Properties:
@@ -370,7 +373,8 @@ Resources:
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VotingAppApiGateway}/*/*"
-      
+    DependsOn: VotingAppStoreVoteLambda
+    
   LambdaPermissionFetchResults:
     Type: AWS::Lambda::Permission
     Properties:
@@ -378,7 +382,8 @@ Resources:
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VotingAppApiGateway}/*/*"   
-      
+    DependsOn: VotingAppFetchResultsLambda 
+    
 ######------------ S3 Bucket ------------######
 
   S3Bucket:
