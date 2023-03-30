@@ -10,7 +10,7 @@ In this mini project you will create a completely serverless voting application 
 ## Step 1 - Cloudformation Template
 
 Login into AWS and select the `us-east-1` region. Apply the template below and wait for `CREATE_COMPLETE` before continuing with step-2.
-### [Serverless Voting Application](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://github.com/ashish3121990/learn-cantrill-labs-1clickrepo/blob/branch-serverless-voting-app/aws-serverless-voting-app/aws-serverless-voting-app.yaml&stackName=Serverless-Voting-App-Demo)
+### [Serverless Voting Application](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://github.com/ashish3121990/learn-cantrill-labs-1clickrepo/blob/a9a54adce1085962e31ac20adf0ea4b5b5732687/aws-serverless-voting-app/aws-serverless-voting-app.yaml&stackName=Serverless-Voting-App-Demo)
 
 This template will create the below resources.
 - Lambda Functions
