@@ -10,10 +10,9 @@ In this mini project you will create a completely serverless voting application 
 ## Step 1 - Cloudformation Template
 
 Login into AWS and select the `us-east-1` region. Apply the template below and wait for `CREATE_COMPLETE` before continuing with step-2.
-
 ### [Serverless Voting Application](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://github.com/ashish3121990/learn-cantrill-labs-1clickrepo/blob/branch-serverless-voting-app/aws-serverless-voting-app/aws-serverless-voting-app.yaml&stackName=Serverless-Voting-App-Demo)
 
-The above template will create the below resources.
+This template will create the below resources.
 - Lambda Functions
 - IAM Policies, Lambda Execution roles
 - DynamoDB
@@ -21,7 +20,13 @@ The above template will create the below resources.
 - S3 Bucket
 - Cloud9 IDE
 
-## Step 2 - Cloudformation Template
+## Step 2 - Update the API Gateway endpoints in the React application and deploy to S3 bucket for website hosting
+
+### Check S3 bucket name and website URL
+
+In the **Outputs** section of the cloudformation stack, note that the S3 bucket name and the S3 website URL is displayed. Make a note of these two as they are required in the following steps.
+
+![Screenshots](./Screenshots/cfoutputs.png)
 
 ### Get API Gateway Endpoints
 
@@ -41,30 +46,24 @@ The above template will create the below resources.
 ![Screenshots](./Screenshots/apigateway/21.png)
 
 - Click on the stage name `dev` under which you can see both `vote` and `results` resources.
-- Click on each resource to view the api gateway endpoint or the invoke URL for that resource.
+- Click on each resource to view the api gateway endpoint for that resource.
 - Note that these two URL's will be used in the React frontend to call the api gateway and the backend lambda functions.
 
 ![Screenshots](./Screenshots/apigateway/22.png)
 
 ![Screenshots](./Screenshots/apigateway/23.png)
 
-
-
-
-- cloudformation stack outputs section, note the s3 bucket name and website url
-
-
-
+### Editing the React application using Cloud9 IDE and copy static content to S3 Bucket
 
 - Open the Cloud9 IDE and **Open** the `VotingAppCloud9IDE` environment.
 
-![Screenshots](./Screenshots/15.png)
+![Screenshots](./Screenshots/cloud9/15.png)
 
-![Screenshots](./Screenshots/16.png)
+![Screenshots](./Screenshots/cloud9/16.png)
 
 - Wait for few minutes for the IDE to open and you will see a terminal where you can run linux commands.
 
-![Screenshots](./Screenshots/22.png)
+![Screenshots](./Screenshots/cloud9/22.png)
 
 - Run the below commands in the terminal
 
@@ -79,11 +78,9 @@ cd voting-app-frontend
 - As shown in the below screenshot, expand the folder `voting-app-frontend` from the left side file explorer of the IDE.
 - Inside src, there is a `Vote.js` file. Open the file.
 - You will see that, there are two urls configured in the code `vote_url` for `vote` and `results_fetchurl` for `fetch results`
-- Replace these two URL's with the two urls that you received at the end of stage-1 after creating the API Gateway deployment.
+- Replace these two URL's with the two urls that you received after creating the API Gateway deployment.
 
-![Screenshots](./Screenshots/24.png)
-
-![Screenshots](./Screenshots/24.png)
+![Screenshots](./Screenshots/cloud9/24.png)
 
 - Save the file with CTRL+S
 - In the terminal, run the below commands
@@ -93,28 +90,28 @@ npm update
 npm run build
 ```
 
-![Screenshots](./Screenshots/Stage_2/25.png)
+![Screenshots](./Screenshots/cloud9/25.png)
 
-![Screenshots](./Screenshots/Stage_2/26.png)
+![Screenshots](./Screenshots/cloud9/26.png)
 
-![Screenshots](./Screenshots/Stage_2/27.png)
+![Screenshots](./Screenshots/cloud9/27.png)
 
-- Now you can run the below commands to copy the contents of the build folder to the s3 bucket
+- Now you can run the below commands to copy the contents of the build folder to the s3 bucket. Replace the bucket name with the bucketname that was present in the cloudformation stack output.
 
 ```
 cd build
-aws s3 cp . 's3://serverless-voting-app-demo' --recursive
+aws s3 cp . 's3://<REPLACE_BUCKET_NAME_FROM_STACK_OUTPUT>' --recursive
 ```
 
-![Screenshots](./Screenshots/Stage_2/28.png)
+![Screenshots](./Screenshots/cloud9/28.png)
 
 - In the S3 bucket refresh to see the newly copied files.
 
-![Screenshots](./Screenshots/Stage_2/29.png)
+![Screenshots](./Screenshots/cloud9/29.png)
 
-- Try to access the webpage with the **Bucket website endpoint**
+- Try to access the webpage with the **Bucket website endpoint** that was present in the cloudformation stack output.
 
-![Screenshots](./Screenshots/Stage_2/30.png)
+![Screenshots](./Screenshots/cloud9/30.png)
 
 
 
