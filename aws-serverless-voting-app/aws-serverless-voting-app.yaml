@@ -366,7 +366,7 @@ Resources:
   LambdaPermissionStoreVote:
     Type: AWS::Lambda::Permission
     Properties:
-      FunctionName: voting-app-store-vote
+      FunctionName: !Ref VotingAppStoreVoteLambda
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VotingAppApiGateway}/*/*"
@@ -374,7 +374,7 @@ Resources:
   LambdaPermissionFetchResults:
     Type: AWS::Lambda::Permission
     Properties:
-      FunctionName: voting-app-fetch-results
+      FunctionName: !Ref VotingAppFetchResultsLambda
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VotingAppApiGateway}/*/*"   
