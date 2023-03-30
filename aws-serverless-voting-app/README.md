@@ -9,7 +9,119 @@ In this mini project you will create a completely serverless voting application 
 
 ## Step 1 - Cloudformation Template
 
-Make sure you are logged into AWS and in `us-east-1`. Apply the template below and wait for `CREATE_COMPLETE` before continuing
+Login into AWS and select the `us-east-1` region. Apply the template below and wait for `CREATE_COMPLETE` before continuing with step-2.
 
-## [Serverless Voting Application](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://github.com/ashish3121990/learn-cantrill-labs-1clickrepo/blob/branch-serverless-voting-app/aws-serverless-voting-app/aws-serverless-voting-app.yaml&stackName=Serverless-Voting-App-Demo)
+### [Serverless Voting Application](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://github.com/ashish3121990/learn-cantrill-labs-1clickrepo/blob/branch-serverless-voting-app/aws-serverless-voting-app/aws-serverless-voting-app.yaml&stackName=Serverless-Voting-App-Demo)
+
+The above template will create the below resources.
+- Lambda Functions
+- IAM Policies, Lambda Execution roles
+- DynamoDB
+- API Gateway
+- S3 Bucket
+- Cloud9 IDE
+
+## Step 2 - Cloudformation Template
+
+### Get API Gateway Endpoints
+
+- Open the API Gateway console and click on the `Voting-App-Api-Gateway` 
+- Click on **Actions** and then on **Deploy API**
+
+![Screenshots](./Screenshots/apigateway/18.png)
+
+- Create a new deployment stage and enter a stage name `dev` and click on **Deploy**
+
+![Screenshots](./Screenshots/apigateway/19.png)
+
+![Screenshots](./Screenshots/apigateway/20.png)
+
+- The stages section will be opened.
+
+![Screenshots](./Screenshots/apigateway/21.png)
+
+- Click on the stage name `dev` under which you can see both `vote` and `results` resources.
+- Click on each resource to view the api gateway endpoint or the invoke URL for that resource.
+- Note that these two URL's will be used in the React frontend to call the api gateway and the backend lambda functions.
+
+![Screenshots](./Screenshots/apigateway/22.png)
+
+![Screenshots](./Screenshots/apigateway/23.png)
+
+
+
+
+- cloudformation stack outputs section, note the s3 bucket name and website url
+
+
+
+
+- Open the Cloud9 IDE and **Open** the `VotingAppCloud9IDE` environment.
+
+![Screenshots](./Screenshots/15.png)
+
+![Screenshots](./Screenshots/16.png)
+
+- Wait for few minutes for the IDE to open and you will see a terminal where you can run linux commands.
+
+![Screenshots](./Screenshots/22.png)
+
+- Run the below commands in the terminal
+
+```
+sudo yum install -y nodejs
+node -v
+wget https://github.com/ashish3121990/learn-cantrill-labs-1clickrepo/raw/branch-serverless-voting-app/aws-serverless-voting-app/voting-app-frontend.zip
+unzip voting-app-frontend.zip
+cd voting-app-frontend
+```
+
+- As shown in the below screenshot, expand the folder `voting-app-frontend` from the left side file explorer of the IDE.
+- Inside src, there is a `Vote.js` file. Open the file.
+- You will see that, there are two urls configured in the code `vote_url` for `vote` and `results_fetchurl` for `fetch results`
+- Replace these two URL's with the two urls that you received at the end of stage-1 after creating the API Gateway deployment.
+
+![Screenshots](./Screenshots/24.png)
+
+![Screenshots](./Screenshots/24.png)
+
+- Save the file with CTRL+S
+- In the terminal, run the below commands
+
+```
+npm update
+npm run build
+```
+
+![Screenshots](./Screenshots/Stage_2/25.png)
+
+![Screenshots](./Screenshots/Stage_2/26.png)
+
+![Screenshots](./Screenshots/Stage_2/27.png)
+
+- Now you can run the below commands to copy the contents of the build folder to the s3 bucket
+
+```
+cd build
+aws s3 cp . 's3://serverless-voting-app-demo' --recursive
+```
+
+![Screenshots](./Screenshots/Stage_2/28.png)
+
+- In the S3 bucket refresh to see the newly copied files.
+
+![Screenshots](./Screenshots/Stage_2/29.png)
+
+- Try to access the webpage with the **Bucket website endpoint**
+
+![Screenshots](./Screenshots/Stage_2/30.png)
+
+
+
+
+
+
+
+
+
 
