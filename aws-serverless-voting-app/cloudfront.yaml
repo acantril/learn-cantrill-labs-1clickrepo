@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
 Parameters:
-  S3BucketName:
+  S3BucketURL:
     Type: String
     Description: Enter the name of the S3 bucket without http://
     
@@ -11,7 +11,7 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-        - DomainName: !Ref S3BucketName
+        - DomainName: !Ref S3BucketURL
           Id: myCustomOrigin
           CustomOriginConfig:
             HTTPPort: '80'
@@ -30,3 +30,9 @@ Resources:
         PriceClass: PriceClass_200
         ViewerCertificate:
           CloudFrontDefaultCertificate: 'true'
+          
+Outputs:
+  CloudFrontEndpoint:
+    Description: "Endpoint for Cloudfront Distribution"
+    Value: !GetAtt myDistribution.DomainName
+          
