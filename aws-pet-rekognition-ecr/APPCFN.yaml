@@ -161,8 +161,7 @@ Resources:
           wget https://learn-cantrill-labs.s3.amazonaws.com/aws-pet-rekognition-ecr/app.zip
   S3Bucket:
     Type: AWS::S3::Bucket
-    Properties:
-      AccessControl: PublicRead
+
 
 Outputs:
   S3BucketName:
