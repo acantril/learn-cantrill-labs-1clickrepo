@@ -1,10 +1,7 @@
 Parameters:
   LatestAmiId:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
-    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
-  KeyName:
-    Type: AWS::EC2::KeyPair::KeyName
-    Description: "Name of an existing SSH Keypair to access the instance"
+    Default: '/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64'
   SSHandWebLocation:
     Description: The IP address range that can be used to SSH to the EC2 instances
     Type: String
@@ -17,7 +14,6 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      KeyName: !Ref KeyName
       InstanceType: "t2.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref SessionManagerInstanceProfile
