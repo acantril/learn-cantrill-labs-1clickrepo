@@ -36,7 +36,7 @@ Parameters:
     Type: String
   DBVersion:
     Description: The version of MySQL to use (this can cause compatibility impacts - be certain !
-    Default: "8.0.23"
+    Default: "8.0.32"
     Type: String
   MultiAZ:
     Description: Multi AZ
