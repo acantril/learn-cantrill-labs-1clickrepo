@@ -61,7 +61,7 @@ sudo rm /tmp/db.setup
 
 # Step 9
 
-sudo yum install -y cowsay
+sudo dnf install -y cowsay
 
 
 cowsay "oh hi"
@@ -72,7 +72,7 @@ Create file /etc/update-motd.d/40-cow
 sudo nano /etc/update-motd.d/40-cow
 
 #!/bin/sh
-cowsay "Amazon Linux 2 AMI - Animals4Life"
+cowsay "Amazon Linux 2023 AMI - Animals4Life"
 
 sudo chmod 755 /etc/update-motd.d/40-cow
 sudo rm /etc/update-motd.d/30-banner
