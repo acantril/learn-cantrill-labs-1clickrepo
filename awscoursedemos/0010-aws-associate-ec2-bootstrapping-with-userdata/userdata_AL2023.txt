@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-# Setpassword & DB Variables
+# STEP 1 - Setpassword & DB Variables
 DBName='a4lwordpress'
 DBUser='a4lwordpress'
 DBPassword='4n1m4l$4L1f3'
