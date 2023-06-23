@@ -7,7 +7,7 @@ DBPassword='4n1m4l$4L1f3'
 DBRootPassword='4n1m4l$4L1f3'
 
 # STEP 2 - Install system software - including Web and DB
-sudo dnf install wget php-mysqlnd httpd php-fpm php-mysqli mariadb105-server php-json php php-devel -y
+sudo dnf install wget php-mysqlnd httpd php-fpm php-mysqli mariadb105-server php-json php php-devel cowsay -y
 # STEP 3 - Web and DB Servers Online - and set to startup
 systemctl enable httpd
 systemctl enable mariadb
@@ -42,7 +42,7 @@ mysql -u root --password=$DBRootPassword < /tmp/db.setup
 sudo rm /tmp/db.setup
 # STEP 8 COWSAY
 echo "#!/bin/sh" > /etc/update-motd.d/40-cow
-echo 'cowsay "Amazon Linux 2 AMI - Animals4Life"' >> /etc/update-motd.d/40-cow
+echo 'cowsay "Amazon Linux 2023 AMI - Animals4Life"' >> /etc/update-motd.d/40-cow
 chmod 755 /etc/update-motd.d/40-cow
 update-motd
 
