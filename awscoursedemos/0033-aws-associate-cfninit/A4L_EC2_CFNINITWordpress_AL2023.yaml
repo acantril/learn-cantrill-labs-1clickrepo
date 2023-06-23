@@ -86,7 +86,7 @@ Resources:
                 - /etc/cfn/hooks.d/cfn-auto-reloader.conf
         software_install:
           packages:
-            dnf:
+            yum:
               httpd: []
               mariadb105-server: []
               wget: []
