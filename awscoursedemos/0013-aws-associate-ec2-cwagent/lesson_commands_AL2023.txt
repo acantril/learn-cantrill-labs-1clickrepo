@@ -19,19 +19,19 @@ sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
 /var/log/secure
 /var/log/secure
 (Accept default instance ID)
-Retention - option 5 (7 days)
+Accept the default retention option
 
 # 2 /var/log/httpd/access_log
 /var/log/httpd/access_log
 /var/log/httpd/access_log
 (Accept default instance ID)
-Retention - option 5 (7 days)
+Accept the default retention option
 
 # 3 /var/log/httpd/error_log
 /var/log/httpd/error_log
 /var/log/httpd/error_log
 (Accept default instance ID)
-Retention - option 5 (7 days)
+Accept the default retention option
 
 Answer no to any more logs
 Save config into SSM

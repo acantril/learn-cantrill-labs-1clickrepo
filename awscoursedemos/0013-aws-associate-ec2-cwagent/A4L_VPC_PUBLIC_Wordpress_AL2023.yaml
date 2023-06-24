@@ -21,7 +21,7 @@ Parameters:
     MinLength: '8'
     NoEcho: 'true'
     Type: String
-    Default: '4n1m4l$4L1f3'
+    Default: '4n1m4l54L1f3'
   DBRootPassword:
     ConstraintDescription: must contain only alphanumeric characters.
     Description: MySQL root password
@@ -29,7 +29,7 @@ Parameters:
     MinLength: '8'
     NoEcho: 'true'
     Type: String
-    Default: '4n1m4l$4L1f3'
+    Default: '4n1m4l54L1f3'
   DBUser:
     ConstraintDescription: must begin with a letter and contain only alphanumeric
       characters.
