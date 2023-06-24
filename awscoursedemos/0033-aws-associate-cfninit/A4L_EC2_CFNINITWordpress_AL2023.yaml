@@ -85,18 +85,9 @@ Resources:
                 - /etc/cfn/cfn-hup.conf
                 - /etc/cfn/hooks.d/cfn-auto-reloader.conf
         software_install:
-          packages:
-            yum:
-              httpd: []
-              mariadb105-server: []
-              wget: []
-              cowsay: []
-              php-mysqlnd: []
-              php-fpm: []
-              php-mysqli: []
-              php-json: []
-              php: []
-              php-devel: []
+          commands:
+            0_manual_installs:
+              command: dnf install wget php-mysqlnd httpd php-fpm php-mysqli mariadb105-server php-json php php-devel cowsay -y
           services:
             sysvinit:
               httpd:
