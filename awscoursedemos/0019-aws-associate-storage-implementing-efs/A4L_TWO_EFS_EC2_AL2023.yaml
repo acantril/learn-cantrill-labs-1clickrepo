@@ -391,7 +391,7 @@ Resources:
           dnf -y install wget cowsay
           # STEP 3 - COWSAY
           echo "#!/bin/sh" > /etc/update-motd.d/40-cow
-          echo 'cowsay "Amazon Linux 2 AMI - Animals4Life"' >> /etc/update-motd.d/40-cow
+          echo 'cowsay "Amazon Linux 2023 AMI - Animals4Life"' >> /etc/update-motd.d/40-cow
           chmod 755 /etc/update-motd.d/40-cow
           update-motd
           # STEP 4 SIGNAL FINISH OF INSTALL & CONFIG
