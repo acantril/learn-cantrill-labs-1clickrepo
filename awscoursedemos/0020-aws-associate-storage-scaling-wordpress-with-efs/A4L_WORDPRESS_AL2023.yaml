@@ -1,5 +1,5 @@
 
-Description:  Animals4Life base VPC Template + Boostrapped Wordpress (requires VPC_EFS_AURORA in CREATE_COMPLETE)
+Description:  Animals4Life base VPC Template + Boostrapped Wordpress (requires VPC_EFS_RDS in CREATE_COMPLETE)
 Parameters:
   LatestAmiId:
     Description: AMI for Wordpess Instance (default is latest AmaLinux2023)
