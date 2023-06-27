@@ -2,9 +2,9 @@
 Description:  Animals4Life base VPC Template + EFS + Aurora DB Cluster
 Parameters:
   LatestAmiId:
-    Description: AMI for Wordpess Instance (default is latest AmaLinux2)
+    Description: AMI for Wordpess Instance (default is latest AmaLinux2023)
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
-    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+    Default: '/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64'
   DBName:
     AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
     ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
@@ -37,16 +37,10 @@ Parameters:
   DBInstanceType:
     Type: String
     Default: 'db.t3.medium'
-  DatabaseRestoreSnapshot:
-    Description: The snapshot name to restore from - Leave Blank for a new DB, USE ARN for a MIGRATION of a non aurora snapshot or name for aurora
-    Type: String
   DBVersion:
-    Description: 'The version of Aurora to use (this can cause compatibility impacts - be certain !'
-    Default: "8.0.mysql_aurora.3.02.0"
+    Description: 'The version of RDS'
+    Default: "8.0.32"
     Type: String
-Conditions:
-  NoSnapshot:
-    !Equals ['', !Ref DatabaseRestoreSnapshot]
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -401,50 +395,25 @@ Resources:
         - !Ref SubnetDBA
         - !Ref SubnetDBB
         - !Ref SubnetDBC
-  DBCluster: 
-    Type: "AWS::RDS::DBCluster"
+  DB:
+    Type: AWS::RDS::DBInstance
     DeletionPolicy: Delete
-    Properties: 
+    Properties:
+      AllocatedStorage: "20"
+      DBInstanceClass: "db.t2.micro"
       DBSubnetGroupName: !Ref DBSubnetGroup
-      DatabaseName: !If [NoSnapshot,  !Ref DBName, !Ref 'AWS::NoValue' ]
-      Engine: 'aurora-mysql'
-      EngineMode: 'provisioned'
+      DBName: !Ref DBName
+      Engine: MySQL
       EngineVersion: !Ref DBVersion
-      MasterUserPassword: !If [NoSnapshot, !Ref DBPassword, !Ref 'AWS::NoValue' ]
-      MasterUsername: !If [NoSnapshot, !Ref DBUser, !Ref 'AWS::NoValue' ]
-      SnapshotIdentifier: !If [ NoSnapshot, !Ref 'AWS::NoValue', !Ref DatabaseRestoreSnapshot]
+      MasterUserPassword: !Ref DBPassword
+      MasterUsername: !Ref DBUser
+      StorageType: gp2
       Tags: 
         - 
           Key: Name
-          Value: "A4L-Aurora-Cluster"
-      VpcSecurityGroupIds:
-        - !Ref RDSSecurityGroup   
-  AuroraInstance1:
-    Type: AWS::RDS::DBInstance
-    DeletionPolicy: Delete
-    Properties:
-      AllowMajorVersionUpgrade: false
-      AutoMinorVersionUpgrade: true
-      DBClusterIdentifier: !Ref DBCluster
-      DBInstanceClass: !Ref DBInstanceType
-      DBSubnetGroupName: !Ref DBSubnetGroup
-      Engine: 'aurora-mysql'
-      Tags:
-        - Key: Name
-          Value: !Join [ '', [ 'WordPress / ', !Ref 'AWS::StackName' ] ]
-  AuroraInstance2:
-    Type: AWS::RDS::DBInstance
-    DeletionPolicy: Delete
-    Properties:
-      AllowMajorVersionUpgrade: false
-      AutoMinorVersionUpgrade: true
-      DBClusterIdentifier: !Ref DBCluster
-      DBInstanceClass: !Ref DBInstanceType
-      DBSubnetGroupName: !Ref DBSubnetGroup
-      Engine: 'aurora-mysql'
-      Tags:
-        - Key: Name
-          Value: !Join [ '', [ 'WordPress / ', !Ref 'AWS::StackName' ] ]
+          Value: "A4L-RDS-DB"
+      VPCSecurityGroups:
+        - !Ref RDSSecurityGroup  
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -649,7 +618,7 @@ Outputs:
       Name: "A4L-InstanceSecurityGroup"
   dbendpoint:
     Description: "RDS Endpoint Address"
-    Value: !GetAtt DBCluster.Endpoint.Address
+    Value: !GetAtt DB.Endpoint.Address
     Export:
       Name: "A4L-DBENDPOINT"
   ElasticFileSystem:

@@ -56,7 +56,7 @@ Resources:
             #!/bin/bash -xe
 
             # STEP 2 - Install system software - including Web and DB
-            dnf install wget cowsay amazon-linux-extras -y
+            dnf install wget cowsay amazon-efs-utils -y
             dnf install httpd mariadb105-server -y
             dnf install php-mysqlnd php-fpm php-mysqli php-json php php-devel -y
 
