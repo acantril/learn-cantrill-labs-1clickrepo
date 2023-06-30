@@ -1,0 +1,14 @@
+
+# PART 1
+
+No commands needed
+
+# PART 2
+
+ping 1.1.1.1
+aws s3 ls
+aws s3 cp s3://bucketname/supersecret.txt supersecret.txt
+
+# Part 3
+
+ping -6 ipv6.google.com
