@@ -133,7 +133,7 @@ Resources:
         - Key: Name
           Value: ONPREM-ROUTER1
       UserData:
-        Fn::Base64: !Sub |
+        Fn::Base64: |
             #!/bin/bash -xe
             apt-get update && apt-get install -y strongswan wget
             mkdir /home/ubuntu/demo_assets
@@ -184,7 +184,7 @@ Resources:
         - Key: Name
           Value: ONPREM-ROUTER2
       UserData:
-        Fn::Base64: !Sub |
+        Fn::Base64: |
             #!/bin/bash -xe
             apt-get update && apt-get install -y strongswan wget
             mkdir /home/ubuntu/demo_assets

@@ -67,8 +67,8 @@ Resources:
                   - "s3:ListBucket"
                   - "s3:GetObject"
                 Resource:
-                  - !Sub "arn:aws:s3:::cl-randomstuffforlessons"
-                  - !Sub "arn:aws:s3:::cl-randomstuffforlessons/*"
+                  - "arn:aws:s3:::cl-randomstuffforlessons"
+                  - "arn:aws:s3:::cl-randomstuffforlessons/*"
               -
                 Sid: WriteToStudentBuckets
                 Effect: Allow
