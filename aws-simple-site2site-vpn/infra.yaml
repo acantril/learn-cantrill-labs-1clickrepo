@@ -220,7 +220,8 @@ Resources:
           yum -y install httpd  
           systemctl enable httpd
           systemctl start httpd
-          instanceId=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+          TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+          instanceId=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
           wget -O /var/www/html/cat.gif "https://learn-cantrill-labs.s3.amazonaws.com/aws-simple-site2site-vpn/cat.jpg"
           echo "<html><head></head><body\">" >> /var/www/html/index.html
           echo "<center><h1>Instance ID : $instanceId</h1></center><br>" >> /var/www/html/index.html
