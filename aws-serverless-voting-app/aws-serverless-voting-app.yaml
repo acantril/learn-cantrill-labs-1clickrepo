@@ -1,0 +1,436 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Cloudformation template for serverless voting application.
+Resources:
+
+######------------ Lambda Function - To fetch vote results from dynamodb ------------######
+
+  VotingAppFetchResultsLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: voting-app-fetch-results
+      Runtime: nodejs14.x
+      Role: !GetAtt FetchResultsLambdaExecutionRole.Arn
+      Handler: index.handler
+      Description: Lambda function to fetch vote results from dynamodb
+      Code:
+        ZipFile: |
+            const AWS = require("aws-sdk");
+            const dynamo = new AWS.DynamoDB.DocumentClient();
+            const ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+            
+            exports.handler = async (event) => {
+            
+            // Retrieve items from the table
+            const params = {
+                TableName: "Voting_Table"
+            };
+            
+            let scanResults = [];
+            let items;
+            
+            do {
+                items = await dynamo.scan(params).promise();
+                items.Items.forEach((item) => scanResults.push(item));
+                params.ExclusiveStartKey  = items.LastEvaluatedKey;
+            } while(typeof items.LastEvaluatedKey != "undefined");
+            
+            if (scanResults.length == 0) 
+            {
+                console.log('No Items were found - ',scanResults.length);
+                scanResults = [{ votecount: 0, vote_id: 'Cat-1'},{ votecount: 0, vote_id: 'Cat-2'},{ votecount: 0, vote_id: 'Cat-3'}];
+            
+                // Inserting Dummy Records
+                console.log('Inserting Dummy Records');
+                var obj1 = {
+                    'TableName': 'Voting_Table',
+                    'Item': {
+                    'vote_id': {
+                        S: 'Cat-1'
+                    },
+                    'votecount': {
+                        N: '0'
+                    }
+                    },
+                    'ReturnConsumedCapacity': "TOTAL"
+                };
+                var obj2 = {
+                    'TableName': 'Voting_Table',
+                    'Item': {
+                    'vote_id': {
+                        S: 'Cat-2'
+                    },
+                    'votecount': {
+                        N: '0'
+                    }
+                    },
+                    'ReturnConsumedCapacity': "TOTAL"
+                };
+                var obj3 = {
+                    'TableName': 'Voting_Table',
+                    'Item': {
+                    'vote_id': {
+                        S: 'Cat-3'
+                    },
+                    'votecount': {
+                        N: '0'
+                    }
+                    },
+                    'ReturnConsumedCapacity': "TOTAL"
+                };
+                
+                try
+                {
+                    var result1 = await ddb.putItem(obj1).promise();
+                    console.log(result1);
+                    console.log('Dummy Records added successfully');
+                }
+                catch(err1)
+                {
+                    console.log('ERROR while adding Dummy Records');
+                    console.log(err1);
+                }
+                
+                try
+                {
+                    var result2 = await ddb.putItem(obj2).promise();
+                    console.log(result2);
+                    console.log('Dummy Records added successfully');
+                }
+                catch(err2)
+                {
+                    console.log('ERROR while adding Dummy Records');
+                    console.log(err2);
+                }
+                
+                try
+                {
+                    var result3 = await ddb.putItem(obj3).promise();
+                    console.log(result3);
+                    console.log('Dummy Records added successfully');
+                }
+                catch(err3)
+                {
+                    console.log('ERROR while adding Dummy Records');
+                    console.log(err3);
+                }
+            }
+            
+            /*
+            Access-Control-Allow-Origin
+            
+            -> To allow only specific site to call this lambda function provide the hostname of your cloudfront or s3 webshite
+            -> For Example :- http://<S3-BUCKET-NAME>.s3-website-us-east-1.amazonaws.com
+            -> To try from localhost use this :- 'http://localhost:3000'
+            -> * will allow all origins to call this function and get response back.
+            */	
+            return {
+                statusCode: 200,
+                body: JSON.stringify(scanResults),
+                headers: {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET'
+                    }
+            };            
+            };
+
+######------------ Lambda Function - To store vote in dynamodb ------------######
+
+  VotingAppStoreVoteLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: voting-app-store-vote
+      Runtime: python3.9
+      Role: !GetAtt StoreVoteLambdaExecutionRole.Arn
+      Handler: index.lambda_handler
+      Description: Lambda function to store vote in dynamodb
+      Code:
+        ZipFile: |
+            
+            import json
+            import boto3
+            import os
+            
+            client = boto3.client('dynamodb')
+            
+            def lambda_handler(event, context):
+                
+                vote_id = str(event['queryStringParameters'].get('vote_id'))
+            
+                print('Vote Received For '+vote_id)
+                
+                ## Increment the vote count by 1
+                
+                response = client.update_item(
+                    Key={
+                    'vote_id': {
+                        'S': vote_id
+                    }},
+                AttributeUpdates={
+                    'votecount': {
+                        'Value': {
+                            'N': '1',
+                        },
+                        'Action': 'ADD'
+                    }
+                },
+                ReturnConsumedCapacity='TOTAL',
+                TableName='Voting_Table',
+                )
+                
+                ## Access-Control-Allow-Origin
+                
+                ## To allow only specific site to call this lambda function provide the hostname of your cloudfront or s3 webshite
+                ## For Example :- http://<S3-BUCKET-NAME>.s3-website-us-east-1.amazonaws.com
+                ## To try from localhost use this :- 'http://localhost:3000'
+                ## * will allow all origins to call this function and get response back.
+            
+                response = {
+                'statusCode': 200,
+                'body': json.dumps(vote_id),
+                'headers': {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'POST'
+                    }
+                }
+                print(response)
+                return response
+
+######------------ IAM Policy - Basic CloudWatch permissions for lambda functions ------------######
+
+  BasicLambdaCloudWatchPolicy:     
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      ManagedPolicyName: Basic-Lambda-CloudWatch-Policy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'logs:CreateLogStream'
+              - 'logs:PutLogEvents'              
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - 'logs:CreateLogGroup'              
+            Resource: '*'
+            
+######------------ IAM Policy - DynamoDB Scan permissions for Fetch Results Lambda function ------------######
+
+  DynamoDBScanPolicy:     
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      ManagedPolicyName: Lambda-DynamoDBScan-Policy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'dynamodb:Scan'
+              - 'dynamodb:PutItem'
+            Resource: !GetAtt DynamoDBVotingTable.Arn
+
+######------------ IAM Policy - DynamoDB Update permissions for Store Vote Lambda function ------------######
+
+  DynamoDBUpdatePolicy:     
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      ManagedPolicyName: Lambda-DynamoDBUpdate-Policy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'dynamodb:PutItem'
+              - 'dynamodb:UpdateItem'              
+            Resource: !GetAtt DynamoDBVotingTable.Arn
+            
+######------------ Lambda Execution Role - Fetch Results ------------######
+ 
+  FetchResultsLambdaExecutionRole:
+    Type: 'AWS::IAM::Role'    
+    Properties:
+      Description: Lambda execution role for the fetch results lambda function
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - !Ref BasicLambdaCloudWatchPolicy
+        - !Ref DynamoDBScanPolicy
+
+######------------ Lambda Execution Role - Store Vote ------------######
+
+  StoreVoteLambdaExecutionRole:
+    Type: 'AWS::IAM::Role'    
+    Properties:
+      Description: Lambda execution role for the store vote lambda function
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - !Ref BasicLambdaCloudWatchPolicy
+        - !Ref DynamoDBUpdatePolicy        
+
+######------------ DYNAMO DB ------------######
+
+  DynamoDBVotingTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: "Voting_Table"
+      AttributeDefinitions: 
+        - 
+          AttributeName: "vote_id"
+          AttributeType: "S"
+      KeySchema: 
+        - 
+          AttributeName: "vote_id"
+          KeyType: "HASH"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+
+######------------ API GATEWAY ------------######
+
+  VotingAppApiGateway:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: Voting-App-Api-Gateway
+      Parameters:
+        endpointConfigurationTypes: REGIONAL
+    DependsOn: VotingAppFetchResultsLambda
+    
+  ApiGatewayResourceResults:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: VotingAppApiGateway
+      ParentId:
+        Fn::GetAtt:
+          - VotingAppApiGateway
+          - RootResourceId
+      PathPart: results
+    DependsOn: VotingAppFetchResultsLambda
+    
+  ApiGatewayResourceVote:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: VotingAppApiGateway
+      ParentId:
+        Fn::GetAtt:
+          - VotingAppApiGateway
+          - RootResourceId
+      PathPart: vote
+    DependsOn: VotingAppStoreVoteLambda
+    
+  ApiGatewayMethodResults:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId:
+        Ref: VotingAppApiGateway
+      ResourceId:
+        Ref: ApiGatewayResourceResults
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: GET
+        Uri: !Sub  "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:voting-app-fetch-results/invocations"
+    DependsOn: VotingAppFetchResultsLambda  
+    
+  ApiGatewayMethodVote:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId:
+        Ref: VotingAppApiGateway
+      ResourceId:
+        Ref: ApiGatewayResourceVote
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub  "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:voting-app-store-vote/invocations"
+    DependsOn: VotingAppStoreVoteLambda
+    
+  LambdaPermissionStoreVote:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref VotingAppStoreVoteLambda
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VotingAppApiGateway}/*/*"
+    DependsOn: VotingAppStoreVoteLambda
+    
+  LambdaPermissionFetchResults:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref VotingAppFetchResultsLambda
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VotingAppApiGateway}/*/*"   
+    DependsOn: VotingAppFetchResultsLambda 
+    
+######------------ S3 Bucket ------------######
+
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+    DeletionPolicy: Retain
+  BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref S3Bucket
+                - /*
+      Bucket: !Ref S3Bucket
+
+######------------ Cloud9 IDE ------------######
+
+  Cloud9IDE:
+    Type: AWS::Cloud9::EnvironmentEC2
+    Properties: 
+      AutomaticStopTimeMinutes: 30
+      ConnectionType: CONNECT_SSM
+      Description: Cloud9 IDE for updaing the react application code with API endpoints and copy website content to S3 bucket
+      InstanceType: t2.micro
+      Name: VotingAppCloud9IDE
+
+######------------ OUTPUTS ------------######
+
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt
+      - S3Bucket
+      - WebsiteURL
+    Description: URL for website hosted on S3
+  S3BucketName:
+    Value: !Ref S3Bucket
+    Description: Name of S3 bucket to hold website content
