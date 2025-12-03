@@ -347,7 +347,7 @@ Resources:
   PublicEC2:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       KeyName: !Ref KeyName
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref SessionManagerInstanceProfile

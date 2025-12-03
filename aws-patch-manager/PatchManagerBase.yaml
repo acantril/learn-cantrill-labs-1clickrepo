@@ -303,7 +303,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref 'WindowsAMI'
-      InstanceType: 't2.micro'
+      InstanceType: 't3.micro'
       SubnetId: !Ref 'OnpremSNPrivate'
       Tags:
         - Key: Name
@@ -315,7 +315,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref 'CentosAMI'
-      InstanceType: 't2.micro'
+      InstanceType: 't3.micro'
       SubnetId: !Ref 'OnpremSNPrivate'
       Tags:
         - Key: Name
@@ -331,7 +331,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref 'UbuntuAMI'
-      InstanceType: 't2.micro'
+      InstanceType: 't3.micro'
       SubnetId: !Ref 'OnpremSNPrivate'
       Tags:
         - Key: Name
@@ -349,7 +349,7 @@ Resources:
       - AWSNATGW
     Properties:
       ImageId: !Ref 'WindowsAMI'
-      InstanceType: 't2.micro'
+      InstanceType: 't3.micro'
       SubnetId: !Ref 'AWSSNPrivate'
       Tags:
         - Key: Name
@@ -363,7 +363,7 @@ Resources:
       - AWSNATGW
     Properties:
       ImageId: !Ref 'CentosAMI'
-      InstanceType: 't2.micro'
+      InstanceType: 't3.micro'
       SubnetId: !Ref 'AWSSNPrivate'
       Tags:
         - Key: Name
@@ -381,7 +381,7 @@ Resources:
       - AWSNATGW
     Properties:
       ImageId: !Ref 'UbuntuAMI'
-      InstanceType: 't2.micro'
+      InstanceType: 't3.micro'
       SubnetId: !Ref 'AWSSNPrivate'
       Tags:
         - Key: Name
@@ -393,7 +393,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref 'AmazonLinux2AMI'
-      InstanceType: 't2.micro'
+      InstanceType: 't3.micro'
       SubnetId: !Ref 'AWSSNPublic'
       Tags:
         - Key: Name
@@ -405,7 +405,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref 'AmazonLinux2AMI'
-      InstanceType: 't2.micro'
+      InstanceType: 't3.micro'
       SubnetId: !Ref 'OnpremSNPublic'
       Tags:
         - Key: Name

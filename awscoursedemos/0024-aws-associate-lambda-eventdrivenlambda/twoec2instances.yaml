@@ -6,7 +6,7 @@ Resources:
   Instance1:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       Tags:
         - Key: Name
@@ -14,7 +14,7 @@ Resources:
   Instance2:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       Tags:
         - Key: Name

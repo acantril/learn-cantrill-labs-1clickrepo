@@ -174,7 +174,7 @@ Resources:
             04_fix_permissions:
               command: /tmp/permissionsfix
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       SubnetId: !ImportValue a4l-vpc1-subnet-weba
       SecurityGroupIds: 

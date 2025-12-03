@@ -352,7 +352,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       KeyName: !Ref KeyName
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref SessionManagerInstanceProfile
       SubnetId: !Ref SubnetWEBA

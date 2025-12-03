@@ -185,7 +185,7 @@ Resources:
       ResourceSignal:
         Timeout: PT15M
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref InstanceProfile
       SubnetId: !Ref SubnetWEBA
@@ -211,7 +211,7 @@ Resources:
       ResourceSignal:
         Timeout: PT15M
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref InstanceProfile
       SubnetId: !Ref SubnetWEBA

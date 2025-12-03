@@ -159,7 +159,7 @@ Resources:
     Type: AWS::EC2::LaunchTemplate
     Properties: 
       LaunchTemplateData: 
-        InstanceType: "t2.micro"
+        InstanceType: "t3.micro"
         CreditSpecification:
           CpuCredits: unlimited
         ImageId: !Ref LatestAmiId

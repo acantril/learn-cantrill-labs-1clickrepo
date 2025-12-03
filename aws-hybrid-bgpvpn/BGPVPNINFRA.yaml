@@ -101,7 +101,7 @@ Resources:
       - AWSssmec2messagesinterfaceendpoint
       - AWSssmmessagesinterfaceendpoint
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref AWSEC2InstanceProfile
       SubnetId: !Ref AWSSubnetPrivateA
@@ -117,7 +117,7 @@ Resources:
       - AWSssmec2messagesinterfaceendpoint
       - AWSssmmessagesinterfaceendpoint
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref AWSEC2InstanceProfile
       SubnetId: !Ref AWSSubnetPrivateB
@@ -494,7 +494,7 @@ Resources:
       - ONPREMssmec2messagesVPCe
       - ONPREMssmmessagesVPCe
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref ONPREMEC2InstanceProfile
       SubnetId: !Ref ONPREMPriv1
@@ -510,7 +510,7 @@ Resources:
       - ONPREMssmec2messagesVPCe
       - ONPREMssmmessagesVPCe
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref ONPREMEC2InstanceProfile
       SubnetId: !Ref ONPREMPriv2

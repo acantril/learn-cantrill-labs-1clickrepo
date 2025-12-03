@@ -343,7 +343,7 @@ Resources:
   Instance1:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref SessionManagerInstanceProfile
       SubnetId: !Ref SubnetWEBA
@@ -355,7 +355,7 @@ Resources:
   Instance2:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref SessionManagerInstanceProfile
       SubnetId: !Ref SubnetWEBA
@@ -367,7 +367,7 @@ Resources:
   Instance3:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref SessionManagerInstanceProfile
       SubnetId: !Ref SubnetWEBB

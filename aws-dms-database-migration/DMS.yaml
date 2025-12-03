@@ -143,7 +143,7 @@ Resources:
       ResourceSignal:
         Timeout: PT15M
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: "ami-0bf6ba120443f8e1f"
       IamInstanceProfile: !Ref onpremInstanceProfile
       SubnetId: !Ref onpremPublicSubnet
@@ -171,7 +171,7 @@ Resources:
       ResourceSignal:
         Timeout: PT15M
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: "ami-0319a571f9ff661d7"
       IamInstanceProfile: !Ref onpremInstanceProfile
       SubnetId: !Ref onpremPublicSubnet

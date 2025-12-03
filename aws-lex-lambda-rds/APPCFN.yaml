@@ -201,7 +201,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref LatestAmiId
-      InstanceType: t2.micro
+      InstanceType: t3.micro
       IamInstanceProfile: !Ref EC2InstanceProfile
       NetworkInterfaces:
         - DeviceIndex: 0

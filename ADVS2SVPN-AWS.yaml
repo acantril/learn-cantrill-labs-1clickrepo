@@ -86,7 +86,7 @@ Resources:
       - ssmec2messagesinterfaceendpoint
       - ssmmessagesinterfaceendpoint
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref EC2InstanceProfile
       SubnetId: !Ref SubnetPrivateA
@@ -102,7 +102,7 @@ Resources:
       - ssmec2messagesinterfaceendpoint
       - ssmmessagesinterfaceendpoint
     Properties:
-      InstanceType: "t2.micro"
+      InstanceType: "t3.micro"
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref EC2InstanceProfile
       SubnetId: !Ref SubnetPrivateB
